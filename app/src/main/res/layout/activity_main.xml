@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--利用 CameraX -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/pre"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <TextView
+        android:id="@+id/gaodeInfo"
+        style="@style/bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_click_video" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/permission_dp_10"
+            android:max="8"
+            android:progress="0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/main_bt1"
+                style="@style/bt"
+                android:text="@string/app_part" />
+
+            <Button
+                android:id="@+id/main_bt2"
+                style="@style/bt"
+                android:text="@string/app_start" />
+
+            <Button
+                android:id="@+id/main_bt3"
+                style="@style/bt"
+                android:text="@string/app_sup"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+
+
+        <TextView
+            style="@style/bt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_video_f" />
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <RadioButton
+                android:textColor="@color/white"
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手动分段"
+                android:layout_marginStart="@dimen/permission_dp_10"
+                android:checked="true"/>
+            <RadioButton
+                android:textColor="@color/white"
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="按经纬度分段"
+                android:layout_marginStart="@dimen/permission_dp_10"/>
+
+            <RadioButton
+                android:textColor="@color/white"
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="按时间分段"
+                android:layout_marginStart="@dimen/permission_dp_10"/>
+
+
+        </RadioGroup>
+
+        <!--保存成功直接跳转到编辑/上传界面-->
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,320 @@
+package com.pikachu.upvideo.cls;
+
+import android.annotation.SuppressLint;
+
+import com.amap.api.location.AMapLocation;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class VideoUpJson {
+
+
+    //地址详细数据
+    public static class MapInfo {
+        private int locationType; //定位类型
+        private double latitude; //纬度
+        private double longitude; //经度
+        private float accuracy; //精度信息(单位：米)
+        private double altitude; // 海拔高度(单位：米)
+        private float bearing; // 方向 度 取值范围：【0，360】，其中0度表示正北方向，90度表示正东，180度表示正南，270度表示正西
+        private String address;//地址
+        private String country; //国家信息
+        private String province; //省信息
+        private String city; // 城市信息
+        private String district; // 城区信息
+        private String street; // 街道信息
+        private String streetNum; // 街道门牌号
+        private String cityCode; // 城市编码
+        private String adCode; // 地区编码
+        private String aoiName; // 定位点的AOI信息
+        private String buildingId; // 室内定位的建筑物Id
+        private String floor; // 室内定位的楼层
+        private int gpsAccuracyStatus; // GPS的状态
+        private int satellites ; //当前可用卫星数量
+        private float speed; // 当前速度(单位：米/秒)
+        private long time; // 定位时间
+
+        public MapInfo(int locationType, double latitude, double longitude,
+                       float accuracy, double altitude, float bearing, String address,
+                       String country, String province, String city,
+                       String district, String street, String streetNum,
+                       String cityCode, String adCode, String aoiName,
+                       String buildingId, String floor, int gpsAccuracyStatus,
+                       int satellites, float speed, long time) {
+            this.locationType = locationType;
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.accuracy = accuracy;
+            this.altitude = altitude;
+            this.bearing = bearing;
+            this.address = address;
+            this.country = country;
+            this.province = province;
+            this.city = city;
+            this.district = district;
+            this.street = street;
+            this.streetNum = streetNum;
+            this.cityCode = cityCode;
+            this.adCode = adCode;
+            this.aoiName = aoiName;
+            this.buildingId = buildingId;
+            this.floor = floor;
+            this.gpsAccuracyStatus = gpsAccuracyStatus;
+            this.satellites = satellites;
+            this.speed = speed;
+            this.time = time;
+        }
+
+        public String getBearingStr(float bearing){
+            if (bearing ==  0 || bearing == 360) return "正北";
+            else if (bearing > 0 && bearing < 90)  return "北偏东" + bearing  +"度";
+            else if (bearing == 90 )  return "正东";
+            else if (bearing > 90 && bearing < 180 )  return "东偏南" + (bearing - 90) + "度";
+            else if (bearing == 180 )  return "正南";
+            else if (bearing > 180 && bearing < 270 )  return "东偏南" + (bearing - 180) + "度";
+            else if (bearing == 270 )  return "正西";
+            else return "西偏北" + (bearing - 270) + "度";
+        }
+
+
+
+        @SuppressLint("SimpleDateFormat")
+        @Override
+        public String toString() {
+            return "定位类型: " + locationType + "\n" +
+                    "纬度: " + latitude + "\n" +
+                    "经度: " + longitude + "\n" +
+                    "精度信息(单位：米): " + accuracy + "\n" +
+                    "海拔高度(单位：米) : "  + altitude + "\n" +
+                    "方向: "  + getBearingStr(bearing)  + "\n" +
+                    "地址: " + address + "\n" +
+                    "国家: " + country + "\n" +
+                    "省信: " + province + "\n" +
+                    "城市: " + city + "\n" +
+                    "城区: " + district + "\n" +
+                    "街道: " + street + "\n" +
+                    "街道门牌号: " + streetNum + "\n" +
+                    "城市编码: " + cityCode + "\n" +
+                    "地区编码: " + adCode + "\n" +
+                    "定位点的AOI信息: " + aoiName + "\n" +
+                    "室内定位的建筑物Id: " + buildingId + "\n" +
+                    "室内定位的楼层: " + floor + "\n" +
+                    "GPS的状态: " + gpsAccuracyStatus + "\n" +
+                    "当前可用卫星数量: "  + satellites  + "\n" +
+                    "当前速度(单位：米/秒): "  + speed + "\n" +
+                    "定位时间: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time));
+        }
+
+
+        public int getLocationType() {
+            return locationType;
+        }
+
+        public void setLocationType(int locationType) {
+            this.locationType = locationType;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(double latitude) {
+            this.latitude = latitude;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(double longitude) {
+            this.longitude = longitude;
+        }
+
+        public float getAccuracy() {
+            return accuracy;
+        }
+
+        public void setAccuracy(float accuracy) {
+            this.accuracy = accuracy;
+        }
+
+        public double getAltitude() {
+            return altitude;
+        }
+
+        public void setAltitude(double altitude) {
+            this.altitude = altitude;
+        }
+
+        public float getBearing() {
+            return bearing;
+        }
+
+        public void setBearing(float bearing) {
+            this.bearing = bearing;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public String getProvince() {
+            return province;
+        }
+
+        public void setProvince(String province) {
+            this.province = province;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
+        public String getDistrict() {
+            return district;
+        }
+
+        public void setDistrict(String district) {
+            this.district = district;
+        }
+
+        public String getStreet() {
+            return street;
+        }
+
+        public void setStreet(String street) {
+            this.street = street;
+        }
+
+        public String getStreetNum() {
+            return streetNum;
+        }
+
+        public void setStreetNum(String streetNum) {
+            this.streetNum = streetNum;
+        }
+
+        public String getCityCode() {
+            return cityCode;
+        }
+
+        public void setCityCode(String cityCode) {
+            this.cityCode = cityCode;
+        }
+
+        public String getAdCode() {
+            return adCode;
+        }
+
+        public void setAdCode(String adCode) {
+            this.adCode = adCode;
+        }
+
+        public String getAoiName() {
+            return aoiName;
+        }
+
+        public void setAoiName(String aoiName) {
+            this.aoiName = aoiName;
+        }
+
+        public String getBuildingId() {
+            return buildingId;
+        }
+
+        public void setBuildingId(String buildingId) {
+            this.buildingId = buildingId;
+        }
+
+        public String getFloor() {
+            return floor;
+        }
+
+        public void setFloor(String floor) {
+            this.floor = floor;
+        }
+
+        public int getGpsAccuracyStatus() {
+            return gpsAccuracyStatus;
+        }
+
+        public void setGpsAccuracyStatus(int gpsAccuracyStatus) {
+            this.gpsAccuracyStatus = gpsAccuracyStatus;
+        }
+
+        public int getSatellites() {
+            return satellites;
+        }
+
+        public void setSatellites(int satellites) {
+            this.satellites = satellites;
+        }
+
+        public float getSpeed() {
+            return speed;
+        }
+
+        public void setSpeed(float speed) {
+            this.speed = speed;
+        }
+
+        public long getTime() {
+            return time;
+        }
+
+        public void setTime(long time) {
+            this.time = time;
+        }
+    }
+
+
+    public static MapInfo aMapLocation2MapInfo(AMapLocation aMapLocation) {
+        return new MapInfo(
+                aMapLocation.getLocationType(),
+                aMapLocation.getLatitude(),
+                aMapLocation.getLongitude(),
+                aMapLocation.getAccuracy(),
+                aMapLocation.getAltitude(),
+                aMapLocation.getBearing(),
+                aMapLocation.getAddress(),
+                aMapLocation.getCountry(),
+                aMapLocation.getProvince(),
+                aMapLocation.getCity(),
+                aMapLocation.getDistrict(),
+                aMapLocation.getStreet(),
+                aMapLocation.getStreetNum(),
+                aMapLocation.getCityCode(),
+                aMapLocation.getAdCode(),
+                aMapLocation.getAoiName(),
+                aMapLocation.getBuildingId(),
+                aMapLocation.getFloor(),
+                aMapLocation.getGpsAccuracyStatus(),
+                aMapLocation.getSatellites(),
+                aMapLocation.getSpeed(),
+                aMapLocation.getTime()
+        );
+    }
+
+
+
+
+
+
+}

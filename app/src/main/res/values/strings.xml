@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">upVideo</string>
+    <string name="app_start">开始录像</string>
+    <string name="app_part">手动分段</string>
+    <string name="app_px">720P 30FPS</string>
+    <string name="app_list">预览/编辑</string>
+    <string name="app_up">开始上传</string>
+    <string name="app_sup">继续</string>
+    <string name="app_video_end">录完后</string>
+    <string name="app_click_video">点击开始录像</string>
+    <string name="app_video_f">分段模式</string>
+
+
+    <string-array name="app_pxs">
+        <item> 720P 30FPS </item>
+        <item> 480P 30FPS </item>
+        <item> 1080P 30FPS </item>
+    </string-array>
+
+</resources>
