@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_search"
+        android:orderInCategory="100"
+        android:title="@string/app_todo"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item1"
+        android:title="全选"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/item2"
+        android:title="删除"
+        app:showAsAction="never"/>
+
+
+
+
+
+</menu>

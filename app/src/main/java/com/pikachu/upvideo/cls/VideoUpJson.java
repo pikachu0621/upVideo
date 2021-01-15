@@ -6,10 +6,23 @@ import com.amap.api.location.AMapLocation;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class VideoUpJson {
 
 
+
+    //项目名
+    private String projectName;
+    //项目创建时间
+    private String projectTime;
+    //项目创建地址
+    private String projectAddress;
+    //项目共有几个点
+    private int projectPoint;
+    //项目状态 - > 1 本地项目（未上传的）， 2 服务器项目（已上传的） ，3 服务器项目修改但未同步
+    private int projectType;
+    private List<MapInfo> mapInfos;
     //地址详细数据
     public static class MapInfo {
         private int locationType; //定位类型

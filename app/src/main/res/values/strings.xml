@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">upVideo</string>
+    <string name="app_name">UpVideo</string>
     <string name="app_start">开始录像</string>
     <string name="app_part">手动分段</string>
     <string name="app_px">720P 30FPS</string>
@@ -9,6 +9,12 @@
     <string name="app_video_end">录完后</string>
     <string name="app_click_video">点击开始录像</string>
     <string name="app_video_f">分段模式</string>
+    <string name="app_author">Pikachu</string>
+    <string name="app_nav_item1">历史上传</string>
+    <string name="app_nav_item2">地图浏览</string>
+    <string name="app_nav_item3">设置/关于</string>
+    <string name="app_nav_item4">退出</string>
+    <string name="app_todo">TODO</string>
 
 
     <string-array name="app_pxs">
@@ -16,5 +22,14 @@
         <item> 480P 30FPS </item>
         <item> 1080P 30FPS </item>
     </string-array>
+
+    <string name="fragment_null">还没有创建任何项目哦！</string>
+    <string name="app_project_delete">删除项目</string>
+    <string name="app_project_modify">修改名称</string>
+    <string name="app_project_info">项目详情</string>
+    <string name="app_add_project">添加项目</string>
+    <string name="app_project_add">添加</string>
+    <string name="app_project_cancel">取消</string>
+    <string name="app_add_project_hin">请输入项目名称，可包含中文</string>
 
 </resources>
