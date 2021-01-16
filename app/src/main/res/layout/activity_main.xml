@@ -41,7 +41,7 @@
             <Button
                 android:id="@+id/main_bt1"
                 style="@style/bt"
-                android:text="@string/app_part" />
+                android:text="@string/app_name" />
 
             <Button
                 android:id="@+id/main_bt2"

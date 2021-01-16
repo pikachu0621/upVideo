@@ -28,6 +28,8 @@ public class AppInfo {
     };
 
 
+    //定位失败重试次数
+    public static int gaoDeInt   = 3;
     // 项目保存路径 /data/user/0/packname/files + videoPath
     public static String videoPath = "/video/";
     //项目保存格式

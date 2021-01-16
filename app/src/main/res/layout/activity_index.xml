@@ -37,6 +37,15 @@
                 android:layout_height="match_parent" />
 
 
+            <ProgressBar
+                android:id="@+id/index_pro"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/permission_dp_40"
+                android:layout_marginBottom="@dimen/permission_dp_40"
+                android:visibility="visible"/>
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/index_floatingActionButton"
                 android:layout_width="wrap_content"
@@ -50,7 +59,8 @@
                 android:layout_marginEnd="@dimen/permission_dp_40"
                 android:layout_marginBottom="@dimen/permission_dp_40"
                 app:fabSize="normal"
-                android:tint="@color/white"/>
+                android:tint="@color/white"
+                android:contentDescription="@string/app_todo" />
         </RelativeLayout>
 
 

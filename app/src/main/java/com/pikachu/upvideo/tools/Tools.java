@@ -5,6 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Tools {
 
 
@@ -22,5 +26,20 @@ public class Tools {
     public static String getVideoPath(Context context){
         return context/*.getFilesDir()*/.getExternalFilesDir("").getAbsolutePath() + AppInfo.videoPath;
     }
+
+
+    @SuppressLint("SimpleDateFormat")
+    public static String getTime(String pattern){
+        return new SimpleDateFormat(pattern).format(new Date());
+    }
+
+    public static String getTime(){
+        return getTime("yyyy-MM-dd HH:mm:ss");
+    }
+
+
+
+
+
 
 }

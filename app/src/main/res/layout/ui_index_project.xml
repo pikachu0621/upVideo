@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/permission_dp_20"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/ui_p_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_project_noup"
+                android:background="@drawable/project_bg1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/ui_p_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_project_wc"
+                android:background="@drawable/project_bg2"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:visibility="gone"/>
+
+
+            <TextView
+                android:id="@+id/ui_p_text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_project_sv"
+                android:background="@drawable/project_bg3"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/text1"
+                android:id="@+id/ui_p_text4"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginStart="@dimen/permission_dp_10" />
+
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/app_todo"
+            android:id="@+id/ui_p_text5"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginTop="@dimen/permission_dp_20" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/permission_dp_20"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_pro_fd"/>
+
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/ui_p_text6"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_marginTop="@dimen/permission_dp_10"
+                    android:text="@string/app_todo"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_pro_pop"/>
+
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/ui_p_text7"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_marginTop="@dimen/permission_dp_10"
+                    android:text="@string/app_todo"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_pro_px"/>
+
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/ui_p_text8"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_marginTop="@dimen/permission_dp_10"
+                    android:text="@string/app_todo"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/app_todo"
+            android:id="@+id/ui_p_text9"
+            android:textColor="@color/black_2"
+            android:gravity="end"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/permission_dp_20" />
+
+
+
+    </LinearLayout>
+
+    <View
+        android:background="@color/black_3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+</LinearLayout>
+

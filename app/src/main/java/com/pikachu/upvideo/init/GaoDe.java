@@ -59,7 +59,15 @@ public class GaoDe {
             //设置是否允许模拟位置,默认为true，允许模拟位置
             mLocationOption.setMockEnable(true);
             //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
-            mLocationOption.setInterval(1000);
+            mLocationOption.setInterval(2000);
+
+
+            //设置首次定位是否等待卫星定位结果
+            mLocationOption.setGpsFirst(true);
+            //设置是否允许模拟位置
+            mLocationOption.setMockEnable(true);
+            //联网超时时间 10s
+            mLocationOption.setHttpTimeOut(10000);
         }
     }
 

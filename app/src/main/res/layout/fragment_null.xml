@@ -17,7 +17,7 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_null"
+        android:text="@string/app_fragment_null"
         android:layout_marginTop="@dimen/permission_dp_20"/>
 
 </LinearLayout>

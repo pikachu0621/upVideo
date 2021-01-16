@@ -13,7 +13,7 @@ import com.pikachu.upvideo.R;
 public class NullFragment extends Fragment {
 
 
-    public NullFragment() {
+    public  NullFragment() {
         // Required empty public constructor
     }
 

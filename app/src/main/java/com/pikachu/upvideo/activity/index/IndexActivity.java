@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +37,8 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     private FragmentManager supportFragmentManager;
     private List<VideoUpJson> videoUpJsons;
     private FloatingActionButton indexFloatingActionButton;
+    private ProgressBar indexPro;
+    private ProjectFragment projectFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,22 +61,14 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
         addProject = AddProjects.getAddProject(this);
 
 
-        //项目显示
-        videoUpJsons = addProject.readProject();
-        if (videoUpJsons.size() > 0) {
-            //项目list
-
-
-        } else {
-            nullFragment = new NullFragment();
-            supportFragmentManager.beginTransaction().replace(R.id.index_frame, nullFragment).commit();
-        }
-
+        //数据
+        projectFragment = new ProjectFragment();
+        supportFragmentManager.beginTransaction().replace(R.id.index_frame,  projectFragment).commit();
 
         //添加项目
         indexFloatingActionButton.setOnClickListener(v ->{
             if (isPermission())
-                addProject.addProject();
+                addProject.addProject(indexPro,indexFloatingActionButton, projectFragment);
             else
                 showToast("权限不足");
         });
@@ -102,6 +95,7 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
         indexNav = findViewById(R.id.index_nav);
         indexDrawer = findViewById(R.id.index_drawer);
         indexFloatingActionButton = findViewById(R.id.index_floatingActionButton);
+        indexPro = findViewById(R.id.index_pro);
     }
 
 
@@ -185,5 +179,11 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
         //finish();
     }
 
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        projectFragment.refresh();
+    }
 
 }

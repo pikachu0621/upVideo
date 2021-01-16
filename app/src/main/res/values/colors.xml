@@ -7,4 +7,15 @@
 
     <color name="black_1">#50000000</color>
     <color name="black_2">#80000000</color>
+    <color name="black_3">#20000000</color>
+
+
+    <!--未上传/未同步-->
+    <color name="up1">#7E321F</color>
+    <!--已上传/已同步-->
+    <color name="up2">#1F7E45</color>
+    <!-- 服务器项目 -->
+    <color name="up3">#1F767E</color>
+
+
 </resources>
