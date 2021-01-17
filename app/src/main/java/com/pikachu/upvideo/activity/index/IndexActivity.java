@@ -22,10 +22,12 @@ import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.init.AddProjects;
 import com.pikachu.upvideo.tools.BaseActivity;
+import com.pikachu.upvideo.tools.Tools;
 
 import java.util.List;
 
-public class IndexActivity extends BaseActivity implements BaseActivity.OnPermissionListener, NavigationView.OnNavigationItemSelectedListener {
+public class IndexActivity extends BaseActivity implements BaseActivity.OnPermissionListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar indexToolbar;
     private NavigationView indexNav;
@@ -34,7 +36,6 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     private SearchView mSearchView;
     private AddProjects addProject;
     private NullFragment nullFragment;
-    private FragmentManager supportFragmentManager;
     private List<VideoUpJson> videoUpJsons;
     private FloatingActionButton indexFloatingActionButton;
     private ProgressBar indexPro;
@@ -52,26 +53,51 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     @SuppressLint("WrongConstant")
     private void init() {
         setActionBar();
-        supportFragmentManager = getSupportFragmentManager();
-
-
+        /*supportFragmentManager = getSupportFragmentManager();*/
         //权限申请
         sendPermission(this);
         //读取项目
         addProject = AddProjects.getAddProject(this);
-
-
-        //数据
-        projectFragment = new ProjectFragment();
-        supportFragmentManager.beginTransaction().replace(R.id.index_frame,  projectFragment).commit();
-
-        //添加项目
+        //变换fragment
+        reFragment();
+        //点击添加项目
         indexFloatingActionButton.setOnClickListener(v ->{
             if (isPermission())
-                addProject.addProject(indexPro,indexFloatingActionButton, projectFragment);
+                   addProject.addProject(indexPro,indexFloatingActionButton, projectFragment);
             else
                 showToast("权限不足");
         });
+    }
+
+    public List<VideoUpJson> reFragment() {
+        videoUpJsons = addProject.readProject();
+        if (projectFragment == null ) {
+            projectFragment = ProjectFragment.newInstance(this , videoUpJsons);
+            nullFragment = new NullFragment();
+        }
+        if (videoUpJsons.size() > 0 ){
+            if ( !getSupportFragmentManager().getFragments().contains(projectFragment) ){
+                showToast("创建 list");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.index_frame,  projectFragment)
+                        .commitAllowingStateLoss();
+            }else {
+                projectFragment.refresh(videoUpJsons);
+            }
+            //projectFragment.refresh();//刷新列表数据
+        } else {
+            if ( !getSupportFragmentManager().getFragments().contains(nullFragment) ){
+                showToast("创建 null");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.index_frame, nullFragment)
+                        .commitAllowingStateLoss();
+            }
+        }
+
+        return videoUpJsons;
+
     }
 
 
@@ -84,9 +110,11 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         indexNav.setNavigationItemSelectedListener(this);
         //创建返回键，并实现打开关/闭监听
-        mDrawerToggle = new ActionBarDrawerToggle(this, indexDrawer, indexToolbar, R.string.app_author, R.string.app_name);
+        mDrawerToggle = new ActionBarDrawerToggle(this, indexDrawer,
+                indexToolbar, R.string.app_author, R.string.app_name);
         mDrawerToggle.syncState();
         indexDrawer.addDrawerListener(mDrawerToggle);
+
     }
 
 
@@ -183,7 +211,7 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     @Override
     protected void onRestart() {
         super.onRestart();
-        projectFragment.refresh();
+        reFragment();
     }
 
 }

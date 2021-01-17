@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+
 public class VideoUpJson {
 
 
@@ -21,7 +22,7 @@ public class VideoUpJson {
     private String projectName;
     //项目创建时间
     private String projectTime;
-    //项目创建地址
+    //项目创建地址/
     private String projectAddress;
 
     //项目状态 - > 0 本地项目（未上传的，位同步的，包括修改服务器项目但未上传的）， 1 已同步的项目（已上传的，本地也有的） ，2 服务器项目（本地没有，纯服务器）
@@ -253,7 +254,8 @@ public class VideoUpJson {
                         "GPS的状态: " + gpsAccuracyStatus + "\n" +
                         "当前可用卫星数量: "  + satellites  + "\n" +
                         "当前速度(单位：米/秒): "  + speed + "\n" +
-                        "定位时间: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time));
+                        "定位时间: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                        .format(new Date(time));
             }
 
 

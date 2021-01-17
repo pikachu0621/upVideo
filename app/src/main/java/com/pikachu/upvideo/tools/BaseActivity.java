@@ -14,9 +14,6 @@ import com.yanzhenjie.permission.runtime.PermissionDef;
 public class BaseActivity  extends AppCompatActivity {
 
 
-
-
-
     public interface OnPermissionListener{
         void onGranted();//授予
         void onDenied();//拒绝
@@ -34,7 +31,8 @@ public class BaseActivity  extends AppCompatActivity {
     }
 
     //权限申请
-    public void sendPermission(OnPermissionListener onPermissionListener, @NonNull @PermissionDef String... permissions){
+    public void sendPermission(OnPermissionListener onPermissionListener,
+                               @NonNull @PermissionDef String... permissions){
 
         if (AndPermission.hasPermissions(this, permissions)){
             onPermissionListener.onGranted();

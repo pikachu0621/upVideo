@@ -21,13 +21,18 @@ import com.pikachu.upvideo.tools.AppInfo;
 import com.pikachu.upvideo.tools.Tools;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Writer;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class AddProjects {
@@ -39,7 +44,21 @@ public class AddProjects {
     private final String videoPath;
     private GaoDe gaoDe;
     private int gaoDeP = 0; //已定位次数
-    private boolean gaoDeStop ; //是否已暂停
+    private boolean gaoDeStop; //是否已暂停
+    private EditText edit;
+    private EditText edit2;
+    @SuppressLint("InflateParams")
+    private View inflate;
+    private Spinner addSpinner1;
+    private Spinner addSpinner2;
+    private Spinner addSpinner3;
+    private AlertDialog.Builder builder;
+    private String name;
+    private int selectedItemPosition;
+    private int selectedItemPosition1;
+    private int selectedItemPosition2;
+    private String sEdit2 = "0";
+    private long integer;
 
 
     public static AddProjects getAddProject(Activity activity) {
@@ -62,22 +81,23 @@ public class AddProjects {
         String[] list1 = new File(videoPath).list();
         if (list1 == null || list1.length <= 0) return false;
         for (String l : list1) {
-            if (l.equals(name) && new File(videoPath + l + "/" + AppInfo.videoProjectName).exists())
+            if (l.equals(name) &&
+                    new File(videoPath + l + "/" + AppInfo.videoProjectName).exists())
                 return true;
         }
         return false;
     }
 
 
-    //添加主项目
-    public void addProject(View progressBar, View floatingActionButton, ProjectFragment projectFragment) {
-        @SuppressLint("InflateParams")
-        View inflate = LayoutInflater.from(activity).inflate(R.layout.ui_edialog, null);
-        EditText edit = inflate.findViewById(R.id.ui_ed_edit);
-        EditText edit2 = inflate.findViewById(R.id.ui_ed_edit2);
-        Spinner addSpinner1= inflate.findViewById(R.id.add_spinner1);
-        Spinner addSpinner2= inflate.findViewById(R.id.add_spinner2);
-        Spinner addSpinner3= inflate.findViewById(R.id.add_spinner3);
+    //初始窗
+    private void initAddDialog() {
+
+        inflate = LayoutInflater.from(activity).inflate(R.layout.ui_edialog, null);
+        edit = inflate.findViewById(R.id.ui_ed_edit);
+        edit2 = inflate.findViewById(R.id.ui_ed_edit2);
+        addSpinner1 = inflate.findViewById(R.id.add_spinner1);
+        addSpinner2 = inflate.findViewById(R.id.add_spinner2);
+        addSpinner3 = inflate.findViewById(R.id.add_spinner3);
 
 
         addSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -91,31 +111,41 @@ public class AddProjects {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+    }
+
+    //添加主项目
+    public void addProject(View progressBar, View floatingActionButton,
+                           ProjectFragment projectFragment) {
+
+        initAddDialog();
+        builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.app_add_project);
         builder.setView(inflate);
         builder.setPositiveButton(R.string.app_project_add, (dialog, which) -> {
 
             //重置
             gaoDeStop = false;
-            String name = edit.getText().toString();
+            gaoDeP = 0;
+            name = edit.getText().toString();
 
-            int selectedItemPosition = addSpinner1.getSelectedItemPosition();
-            int selectedItemPosition1 = addSpinner2.getSelectedItemPosition();
-            int selectedItemPosition2 = addSpinner3.getSelectedItemPosition();
+            selectedItemPosition = addSpinner1.getSelectedItemPosition();
+            selectedItemPosition1 = addSpinner2.getSelectedItemPosition();
+            selectedItemPosition2 = addSpinner3.getSelectedItemPosition();
 
-            String s2 = "0";
+
             if (edit2.getVisibility() == View.VISIBLE) {
-                s2 = edit2.getText().toString();
-                if (s2 == null || s2.equals("")) {
+                sEdit2 = edit2.getText().toString();
+                if (sEdit2 == null || sEdit2.equals("")) {
                     Tools.tw(activity, "创建失败,请输入距离/时间");
                     return;
                 }
             }
-            long integer = Integer.parseInt(s2);
+            integer = Integer.parseInt(sEdit2);
 
 
             if (name.equals("")) Tools.tw(activity, "请输入项目名");
@@ -138,7 +168,8 @@ public class AddProjects {
                     boolean isC = false;
                     StringBuilder stringBuffer = new StringBuilder();
                     //判断定位成功
-                    if (aMapLocation != null && aMapLocation.getErrorCode() == 0 && ! aMapLocation.getAddress().equals("") ) {
+                    if (aMapLocation != null && aMapLocation.getErrorCode()
+                            == 0 && !aMapLocation.getAddress().equals("")) {
                         stringBuffer.append(aMapLocation.getAddress());
                         isC = true;
                     } else {
@@ -147,12 +178,11 @@ public class AddProjects {
                     }
 
                     //失败重试
-                    if (isC){
+                    if (isC) {
                         gaoDe.stop();
                         gaoDeStop = true;
-                    }
-                    else if (gaoDeP < 3) return;
-                    else{
+                    } else if (gaoDeP < 3) return;
+                    else {
                         gaoDe.stop();
                         gaoDeStop = true;
                     }
@@ -166,10 +196,21 @@ public class AddProjects {
                     //Gson 转 String
                     String r = new Gson().toJson(videoUpJson);
                     try {
-                        BufferedWriter out = new BufferedWriter(new FileWriter(videoPath + name + "/" + AppInfo.videoProjectName));
+
+
+                        Writer out = new FileWriter(
+                                new File(videoPath + name + "/" + AppInfo.videoProjectName)
+                        );
                         out.write(r);
                         out.close();
+
+                       /* BufferedWriter out = new BufferedWriter(new FileWriter(videoPath + name + "/" + AppInfo.videoProjectName));
+                        out.write(r);
+                        out.close();*/
                         Tools.tw(activity, "创建成功");
+                        //显示按钮
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         //刷新数据
                         projectFragment.refresh();
 
@@ -189,21 +230,21 @@ public class AddProjects {
         });
         builder.setNegativeButton(R.string.app_project_cancel, null);
         /*.setIcon(R.drawable.ic_add_project)*/
+
         builder.show();
     }
 
 
     //删除一个主项目
-    public boolean deleteProject(String projectName) {
-
-        return false;
+    public void deleteProject(String projectName) {
+        deleteFile(new File(videoPath +projectName));
     }
 
 
-
-
     //修改一个主项目 (null 不修改保持原来的)
-    public boolean modifyProject(String projectName, String projectTime, String projectAddress, int projectPoint, int projectType) {
+    public boolean modifyProject(String projectName, String projectTime,
+                                 String projectAddress, int projectPoint,
+                                 int projectType) {
 
         return false;
     }
@@ -230,8 +271,29 @@ public class AddProjects {
                 videoUpJson.add(new Gson().fromJson(s1, VideoUpJson.class));
             }
         }
+
+        @SuppressLint("SimpleDateFormat")
+        DateFormat df = new SimpleDateFormat(AppInfo.timeStr);
+        Collections.sort(videoUpJson, (o1, o2) -> {
+            try {
+                Date dt1 = df.parse(o1.getProjectTime());
+                Date dt2 = df.parse(o2.getProjectTime());
+                if (dt1.getTime() > dt2.getTime())
+                    return -1;  // dt1 在dt2前
+                if (dt1.getTime() < dt2.getTime())
+                    return 1; // dt1在dt2后
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
         return videoUpJson;
     }
+
+
+
+
+
 
 
     //读取文件
@@ -255,9 +317,15 @@ public class AddProjects {
     }
 
 
-
-
-
+    //删除文件夹
+    private void deleteFile(File file) {
+        if (file == null || !file.exists()) return;
+        File[] files = file.listFiles();
+        for (File f : files)
+            if (f.isDirectory()) deleteFile(f);
+            else f.delete();
+        file.delete();
+    }
 
 
 }

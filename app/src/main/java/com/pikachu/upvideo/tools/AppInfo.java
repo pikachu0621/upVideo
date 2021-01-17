@@ -27,6 +27,8 @@ public class AppInfo {
             Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS //申请调用A-GPS模块
     };
 
+    //时间格式
+    public static String timeStr =  "yyyy-MM-dd HH:mm:ss" ;
 
     //定位失败重试次数
     public static int gaoDeInt   = 3;

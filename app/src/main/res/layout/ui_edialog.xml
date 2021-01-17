@@ -14,7 +14,8 @@
         android:lines="1"
         android:singleLine="true"
         android:textColor="@color/black"
-        android:textSize="@dimen/permission_sp_14" />
+        android:textSize="@dimen/permission_sp_14"
+        android:maxLength="80"/>
 
     <TextView
         style="@style/text1"
@@ -26,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/permission_dp_40"
         android:entries="@array/app_fs"
-        android:layout_marginStart="@dimen/permission_dp_10" />
+        android:layout_marginStart="@dimen/permission_dp_10"
+        />
 
     <EditText
         android:id="@+id/ui_ed_edit2"
@@ -34,13 +36,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="14dp"
         android:hint="@string/app_fd_m"
         android:inputType="number"
         android:lines="1"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="12sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:maxLength="7"/>
 
 
     <TextView

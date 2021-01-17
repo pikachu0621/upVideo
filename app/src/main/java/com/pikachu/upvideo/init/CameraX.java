@@ -101,7 +101,8 @@ public class CameraX {
 
                 if (processCameraProvider != null) {
                     processCameraProvider.unbindAll(); //解绑所有
-                    camera = processCameraProvider.bindToLifecycle((LifecycleOwner) activity, cameraId, preview, videoBuild, mImageCapture);
+                    camera = processCameraProvider.bindToLifecycle((LifecycleOwner) activity,
+                            cameraId, preview, videoBuild, mImageCapture);
                 }
                 preview.setSurfaceProvider(previewView.createSurfaceProvider());
 
@@ -189,7 +190,8 @@ public class CameraX {
         ).format(System.currentTimeMillis()) + ".mp4");
 
         String finalS = s;
-        videoBuild.startRecording(file,Executors.newSingleThreadExecutor() , new VideoCapture.OnVideoSavedCallback() {
+        videoBuild.startRecording(file,Executors.newSingleThreadExecutor() ,
+                new VideoCapture.OnVideoSavedCallback() {
             @Override
             public void onVideoSaved(@NonNull File file) {
                 //保存视频成功回调，会在停止录制时被调用
@@ -197,7 +199,8 @@ public class CameraX {
             }
 
             @Override
-            public void onError(int videoCaptureError, @NonNull String message, @Nullable Throwable cause) {
+            public void onError(int videoCaptureError, @NonNull String message,
+                                @Nullable Throwable cause) {
                 //保存失败的回调，可能在开始或结束录制时被调用8
                 Log.e("test_t", "onError: " + message);
 

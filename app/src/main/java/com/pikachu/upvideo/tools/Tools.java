@@ -24,7 +24,8 @@ public class Tools {
 
     //获取路径
     public static String getVideoPath(Context context){
-        return context/*.getFilesDir()*/.getExternalFilesDir("").getAbsolutePath() + AppInfo.videoPath;
+        return context/*.getFilesDir()*/.getExternalFilesDir("")
+                .getAbsolutePath() + AppInfo.videoPath;
     }
 
 
@@ -34,7 +35,7 @@ public class Tools {
     }
 
     public static String getTime(){
-        return getTime("yyyy-MM-dd HH:mm:ss");
+        return getTime(AppInfo.timeStr);
     }
 
 

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="6dp"
+    app:cardMaxElevation="2dp"
+    app:cardElevation="2dp">
+
 
     <LinearLayout
+        android:id="@+id/ui_p_lin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/permission_dp_20"
@@ -84,6 +89,16 @@
             android:textSize="14sp"
             android:layout_marginTop="@dimen/permission_dp_20" />
 
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/app_todo"
+            android:id="@+id/ui_p_text9"
+            android:textColor="@color/black_2"
+            android:textSize="12sp"
+            android:layout_marginTop="6dp" />
+            <!--android:gravity="end"
+            @dimen/permission_dp_20-->
 
 
         <LinearLayout
@@ -111,7 +126,8 @@
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:layout_marginTop="@dimen/permission_dp_10"
-                    android:text="@string/app_todo"/>
+                    android:text="@string/app_todo"
+                    android:gravity="center"/>
 
             </LinearLayout>
             <LinearLayout
@@ -133,7 +149,8 @@
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:layout_marginTop="@dimen/permission_dp_10"
-                    android:text="@string/app_todo"/>
+                    android:text="@string/app_todo"
+                    android:gravity="center"/>
 
             </LinearLayout>
             <LinearLayout
@@ -155,7 +172,8 @@
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:layout_marginTop="@dimen/permission_dp_10"
-                    android:text="@string/app_todo"/>
+                    android:text="@string/app_todo"
+                    android:gravity="center"/>
 
             </LinearLayout>
 
@@ -163,23 +181,14 @@
 
 
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="@string/app_todo"
-            android:id="@+id/ui_p_text9"
-            android:textColor="@color/black_2"
-            android:gravity="end"
-            android:textSize="12sp"
-            android:layout_marginTop="@dimen/permission_dp_20" />
 
 
 
     </LinearLayout>
 
-    <View
+    <!--<View
         android:background="@color/black_3"
         android:layout_width="match_parent"
-        android:layout_height="2dp"/>
-</LinearLayout>
+        android:layout_height="2dp"/>-->
+</androidx.cardview.widget.CardView>
 
