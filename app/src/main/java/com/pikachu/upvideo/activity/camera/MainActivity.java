@@ -1,26 +1,30 @@
-package com.pikachu.upvideo.activity;
+package com.pikachu.upvideo.activity.camera;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.camera.core.CameraX;
 import androidx.camera.view.PreviewView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.cls.VideoUpJson;
-import com.pikachu.upvideo.init.CameraX;
-import com.pikachu.upvideo.init.GaoDe;
-import com.pikachu.upvideo.tools.BaseActivity;
+import com.pikachu.upvideo.util.state.PKStatusBarTools;
+import com.pikachu.upvideo.util.tools.ToolCameraX;
+import com.pikachu.upvideo.util.tools.ToolGaoDe;
+import com.pikachu.upvideo.util.base.BaseActivity;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, BaseActivity.OnPermissionListener, AMapLocationListener, RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener,
+        BaseActivity.OnPermissionListener,
+        AMapLocationListener,
+        RadioGroup.OnCheckedChangeListener {
 
     private PreviewView pre;
     private Button mainBt1;
@@ -33,11 +37,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 
     //预览/录像
-    private CameraX cameraX;
+    private ToolCameraX cameraX;
     //高德
-    private GaoDe gaoDeTools;
+    private ToolGaoDe toolGaoDeTools;
 
 
+    @Override
+    public PKStatusBarTools pkStatusBarTools() {
+        PKStatusBarTools pkStatusBarTools = PKStatusBarTools.with(this).hideSTS().hideNON();
+        pkStatusBarTools.init();
+        return pkStatusBarTools;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +110,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
             case R.id.main_bt2:
 
-                if (gaoDeTools.isStart()) {
+                if (toolGaoDeTools.isStart()) {
 
 
-                    gaoDeTools.stop();
+                    toolGaoDeTools.stop();
                     mainBt2.setText("开始录像");
                     mainBt3.setText("继续");
                     mainBt3.setVisibility(View.GONE);
@@ -114,7 +124,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 
                 } else {
-                    gaoDeTools.start();
+                    toolGaoDeTools.start();
                     mainBt2.setText("保存录像");
                     mainBt3.setText("暂停");
                     mainBt3.setVisibility(View.VISIBLE);
@@ -155,10 +165,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onGranted() {
         //开始预览
-        cameraX = new CameraX(this, pre);
+        cameraX = new ToolCameraX(this, pre);
         cameraX.setSeekBar(seekBar);
         //初始高德定位
-        gaoDeTools = GaoDe.getGaoDeTools(this, this);
+        toolGaoDeTools = ToolGaoDe.getGaoDeTools(this, this);
     }
 
     @Override

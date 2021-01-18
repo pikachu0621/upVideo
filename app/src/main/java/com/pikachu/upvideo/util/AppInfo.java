@@ -4,7 +4,7 @@
  *
  */
 
-package com.pikachu.upvideo.tools;
+package com.pikachu.upvideo.util;
 
 import android.Manifest;
 

@@ -2,7 +2,7 @@
  * 项目的添加
  */
 
-package com.pikachu.upvideo.init;
+package com.pikachu.upvideo.util.tools;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,8 +17,7 @@ import com.google.gson.Gson;
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.activity.index.ProjectFragment;
 import com.pikachu.upvideo.cls.VideoUpJson;
-import com.pikachu.upvideo.tools.AppInfo;
-import com.pikachu.upvideo.tools.Tools;
+import com.pikachu.upvideo.util.AppInfo;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,14 +34,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class AddProjects {
+public class ToolAddProjects {
 
 
     @SuppressLint("StaticFieldLeak")
-    private static AddProjects addProjects;
+    private static ToolAddProjects toolAddProjects;
     private final Activity activity;
     private final String videoPath;
-    private GaoDe gaoDe;
+    private ToolGaoDe toolGaoDe;
     private int gaoDeP = 0; //已定位次数
     private boolean gaoDeStop; //是否已暂停
     private EditText edit;
@@ -61,15 +60,15 @@ public class AddProjects {
     private long integer;
 
 
-    public static AddProjects getAddProject(Activity activity) {
-        if (addProjects == null)
-            addProjects = new AddProjects(activity);
-        return addProjects;
+    public static ToolAddProjects getAddProject(Activity activity) {
+        if (toolAddProjects == null)
+            toolAddProjects = new ToolAddProjects(activity);
+        return toolAddProjects;
     }
 
-    public AddProjects(Activity activity) {
+    public ToolAddProjects(Activity activity) {
         this.activity = activity;
-        videoPath = Tools.getVideoPath(activity);
+        videoPath = ToolOther.getVideoPath(activity);
 
     }
 
@@ -141,27 +140,27 @@ public class AddProjects {
             if (edit2.getVisibility() == View.VISIBLE) {
                 sEdit2 = edit2.getText().toString();
                 if (sEdit2 == null || sEdit2.equals("")) {
-                    Tools.tw(activity, "创建失败,请输入距离/时间");
+                    ToolOther.tw(activity, "创建失败,请输入距离/时间");
                     return;
                 }
             }
             integer = Integer.parseInt(sEdit2);
 
 
-            if (name.equals("")) Tools.tw(activity, "请输入项目名");
-            else if (isProjectName(name)) Tools.tw(activity, "本地已存在该项目，换个名称吧");
+            if (name.equals("")) ToolOther.tw(activity, "请输入项目名");
+            else if (isProjectName(name)) ToolOther.tw(activity, "本地已存在该项目，换个名称吧");
             else {
 
                 File file = new File(videoPath + name);
                 if (!file.exists()) if (!file.mkdirs()) {
-                    Tools.tw(activity, "创建失败");
+                    ToolOther.tw(activity, "创建失败");
                     return;
                 }
 
                 floatingActionButton.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
 
-                gaoDe = GaoDe.getGaoDeTools(activity, aMapLocation -> {
+                toolGaoDe = ToolGaoDe.getGaoDeTools(activity, aMapLocation -> {
                     //暂停防止多余的回调
                     if (gaoDeStop) return;
                     //本次是否成功
@@ -179,16 +178,16 @@ public class AddProjects {
 
                     //失败重试
                     if (isC) {
-                        gaoDe.stop();
+                        toolGaoDe.stop();
                         gaoDeStop = true;
                     } else if (gaoDeP < 3) return;
                     else {
-                        gaoDe.stop();
+                        toolGaoDe.stop();
                         gaoDeStop = true;
                     }
 
                     //构成 class
-                    VideoUpJson videoUpJson = new VideoUpJson(name, Tools.getTime(),
+                    VideoUpJson videoUpJson = new VideoUpJson(name, ToolOther.getTime(),
                             stringBuffer.toString(), 0,
                             selectedItemPosition, integer,
                             selectedItemPosition1, selectedItemPosition2,
@@ -207,7 +206,7 @@ public class AddProjects {
                        /* BufferedWriter out = new BufferedWriter(new FileWriter(videoPath + name + "/" + AppInfo.videoProjectName));
                         out.write(r);
                         out.close();*/
-                        Tools.tw(activity, "创建成功");
+                        ToolOther.tw(activity, "创建成功");
                         //显示按钮
                         floatingActionButton.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
@@ -216,7 +215,7 @@ public class AddProjects {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Tools.tw(activity, "创建失败");
+                        ToolOther.tw(activity, "创建失败");
                     }
                     //显示按钮
                     floatingActionButton.setVisibility(View.VISIBLE);
@@ -224,7 +223,7 @@ public class AddProjects {
                 });
 
                 //开始定位
-                gaoDe.start();
+                toolGaoDe.start();
 
             }
         });

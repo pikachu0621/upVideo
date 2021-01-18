@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pikachu.upvideo.R;
-import com.pikachu.upvideo.activity.MainActivity;
+import com.pikachu.upvideo.activity.camera.MainActivity;
 import com.pikachu.upvideo.cls.VideoUpJson;
-import com.pikachu.upvideo.init.AddProjects;
-import com.pikachu.upvideo.tools.Tools;
+import com.pikachu.upvideo.util.tools.ToolAddProjects;
+import com.pikachu.upvideo.util.tools.ToolOther;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private FragmentActivity activity;
     private List<VideoUpJson> videoUpJsons;
     private RecyclerAdapter recyclerAdapter;
-    private AddProjects addProject;
+    private ToolAddProjects addProject;
 
 
    /* private static final String ARG_PARAM1 = "param1";
@@ -78,7 +77,7 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
         recyclerAdapter = new RecyclerAdapter(videoUpJsons, this);
         proRe.setAdapter(recyclerAdapter);
         proSw.setOnRefreshListener(this);
-        addProject = AddProjects.getAddProject(activity);
+        addProject = ToolAddProjects.getAddProject(activity);
     }
 
     private void initView() {
@@ -121,7 +120,7 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public boolean onLongClick(View view,VideoUpJson videoUpJson, int position) {
         addProject.deleteProject(videoUpJson.getProjectName());
         refresh(); //刷新数据
-        Tools.tw(activity,"删除成功");
+        ToolOther.tw(activity,"删除成功");
         return true;
     }
 }

@@ -1,4 +1,4 @@
-package com.pikachu.upvideo.init;
+package com.pikachu.upvideo.util.tools;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -7,7 +7,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
-public class GaoDe {
+public class ToolGaoDe {
 
     private final AMapLocationListener var1;
     //定位
@@ -16,25 +16,25 @@ public class GaoDe {
 
     private final Activity activity;
     @SuppressLint("StaticFieldLeak")
-    private static GaoDe gaoDe;
+    private static ToolGaoDe toolGaoDe;
     private boolean start;
 
 
-    public static GaoDe getGaoDeTools(Activity activity) {
-        if (gaoDe == null)
-            gaoDe = new GaoDe(activity, aMapLocation -> {
+    public static ToolGaoDe getGaoDeTools(Activity activity) {
+        if (toolGaoDe == null)
+            toolGaoDe = new ToolGaoDe(activity, aMapLocation -> {
             });
-        return gaoDe;
+        return toolGaoDe;
     }
 
-    public static GaoDe getGaoDeTools(Activity activity, AMapLocationListener var1) {
-        if (gaoDe == null)
-            gaoDe = new GaoDe(activity, var1);
-        return gaoDe;
+    public static ToolGaoDe getGaoDeTools(Activity activity, AMapLocationListener var1) {
+        if (toolGaoDe == null)
+            toolGaoDe = new ToolGaoDe(activity, var1);
+        return toolGaoDe;
     }
 
 
-    public GaoDe(Activity activity, AMapLocationListener var1) {
+    public ToolGaoDe(Activity activity, AMapLocationListener var1) {
         this.activity = activity;
         this.var1 = var1;
         initGaoDe();

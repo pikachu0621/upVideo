@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pikachu.upvideo.view;
+package com.pikachu.upvideo.util.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

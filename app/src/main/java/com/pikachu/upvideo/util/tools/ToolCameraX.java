@@ -1,10 +1,8 @@
-package com.pikachu.upvideo.init;
+package com.pikachu.upvideo.util.tools;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
-import android.media.MediaRecorder;
-import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
 import android.widget.SeekBar;
@@ -12,7 +10,6 @@ import android.widget.SeekBar;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
@@ -25,7 +22,6 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.pikachu.upvideo.tools.Tools;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -33,34 +29,34 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
-public class CameraX {
+public class ToolCameraX {
 
 
     @SuppressLint("StaticFieldLeak")
-    private static CameraX cameraX;
-    private final Activity activity;
-    private final PreviewView previewView;
+    private static ToolCameraX cameraX;
+    private Activity activity;
+    private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> instance;
     private ProcessCameraProvider processCameraProvider;
     private Preview preview;
     private ImageCapture mImageCapture;
     private VideoCapture videoBuild;
-    private final CameraSelector cameraId = CameraSelector.DEFAULT_BACK_CAMERA; //使用后置摄像头
+    private CameraSelector cameraId = CameraSelector.DEFAULT_BACK_CAMERA; //使用后置摄像头
     private Camera camera;
     private SeekBar seekBar;
 
 
-    public static CameraX getCameraX(Activity activity, @IdRes int id) {
+    public static ToolCameraX getCameraX(Activity activity, @IdRes int id) {
         return getCameraX(activity, activity.findViewById(id));
     }
 
-    public static CameraX getCameraX(Activity activity, PreviewView previewView) {
+    public static ToolCameraX getCameraX(Activity activity, PreviewView previewView) {
         if (cameraX == null)
-            cameraX = new CameraX(activity, previewView);
+            cameraX = new ToolCameraX(activity, previewView);
         return cameraX;
     }
 
-    public CameraX(Activity activity, PreviewView previewView) {
+    public ToolCameraX(Activity activity, PreviewView previewView) {
         this.activity = activity;
         this.previewView = previewView;
         //开始预览
@@ -182,7 +178,7 @@ public class CameraX {
     @SuppressLint("RestrictedApi")
     private void saveVideo() {
 
-        String s = Tools.getVideoPath(activity);
+        String s = ToolOther.getVideoPath(activity);
         File file = new File(s);
         if(!file.exists()) file.mkdir();
         file = new File( s = s + new SimpleDateFormat(
@@ -195,7 +191,7 @@ public class CameraX {
             @Override
             public void onVideoSaved(@NonNull File file) {
                 //保存视频成功回调，会在停止录制时被调用
-                activity.runOnUiThread(() ->  Tools.tw(activity, "已保存到： " + finalS) );
+                activity.runOnUiThread(() ->  ToolOther.tw(activity, "已保存到： " + finalS) );
             }
 
             @Override
@@ -204,7 +200,7 @@ public class CameraX {
                 //保存失败的回调，可能在开始或结束录制时被调用8
                 Log.e("test_t", "onError: " + message);
 
-                activity.runOnUiThread(() -> Tools.tw(activity, "保存失败： " + message));
+                activity.runOnUiThread(() -> ToolOther.tw(activity, "保存失败： " + message));
 
             }
         });

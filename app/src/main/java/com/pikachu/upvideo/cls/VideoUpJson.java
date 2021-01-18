@@ -9,12 +9,13 @@ import android.annotation.SuppressLint;
 
 import com.amap.api.location.AMapLocation;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 
-public class VideoUpJson {
+public class VideoUpJson implements Serializable {
 
 
 
@@ -63,17 +64,18 @@ public class VideoUpJson {
 
 
     //保存子项目
-    public static class SonProject {
+    public static class SonProject implements Serializable {
 
         //子项目名
         private String sonProjectName;
-        //子项目地点数据
-        private MapInfo sonProjectMapInfo;
+        //子项目开始地点数据
+        private MapInfo sonProjectStartMapInfo;
+        private MapInfo sonProjectEndMapInfo;
         //历史视频
         private List<ListHisVideo> sonProjectVideo;
 
         //子视频
-        public static class ListHisVideo {
+        public static class ListHisVideo implements Serializable {
             //视频名
             private String videoName;
             //拍摄时间
@@ -144,12 +146,12 @@ public class VideoUpJson {
             this.sonProjectName = sonProjectName;
         }
 
-        public MapInfo getSonProjectMapInfo() {
-            return sonProjectMapInfo;
+        public MapInfo getSonProjectStartMapInfo() {
+            return sonProjectStartMapInfo;
         }
 
-        public void setSonProjectMapInfo(MapInfo sonProjectMapInfo) {
-            this.sonProjectMapInfo = sonProjectMapInfo;
+        public void setSonProjectStartMapInfo(MapInfo sonProjectStartMapInfo) {
+            this.sonProjectStartMapInfo = sonProjectStartMapInfo;
         }
 
         public List<ListHisVideo> getSonProjectVideo() {
@@ -160,8 +162,16 @@ public class VideoUpJson {
             this.sonProjectVideo = sonProjectVideo;
         }
 
+        public MapInfo getSonProjectEndMapInfo() {
+            return sonProjectEndMapInfo;
+        }
+
+        public void setSonProjectEndMapInfo(MapInfo sonProjectEndMapInfo) {
+            this.sonProjectEndMapInfo = sonProjectEndMapInfo;
+        }
+
         //地址详细数据
-        public static class MapInfo {
+        public static class MapInfo implements Serializable {
             private int locationType; //定位类型
             private double latitude; //纬度
             private double longitude; //经度

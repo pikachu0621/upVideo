@@ -14,15 +14,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.cls.VideoUpJson;
-import com.pikachu.upvideo.init.AddProjects;
-import com.pikachu.upvideo.tools.BaseActivity;
-import com.pikachu.upvideo.tools.Tools;
+import com.pikachu.upvideo.util.tools.ToolAddProjects;
+import com.pikachu.upvideo.util.base.BaseActivity;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     private DrawerLayout indexDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private SearchView mSearchView;
-    private AddProjects addProject;
+    private ToolAddProjects addProject;
     private NullFragment nullFragment;
     private List<VideoUpJson> videoUpJsons;
     private FloatingActionButton indexFloatingActionButton;
@@ -44,7 +42,7 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_index);
+        setContentView(R.layout.activity_index, R.id.index_view/*, R.id.index_view1*/);
         initView();
         init();
     }
@@ -57,7 +55,7 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
         //权限申请
         sendPermission(this);
         //读取项目
-        addProject = AddProjects.getAddProject(this);
+        addProject = ToolAddProjects.getAddProject(this);
         //变换fragment
         reFragment();
         //点击添加项目
