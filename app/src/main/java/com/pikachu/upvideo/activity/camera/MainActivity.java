@@ -20,6 +20,7 @@ import com.pikachu.upvideo.util.state.PKStatusBarTools;
 import com.pikachu.upvideo.util.tools.ToolCameraX;
 import com.pikachu.upvideo.util.tools.ToolGaoDe;
 import com.pikachu.upvideo.util.base.BaseActivity;
+import com.pikachu.upvideo.util.view.CameraBtView;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         BaseActivity.OnPermissionListener,
@@ -92,6 +93,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         seekBar = findViewById(R.id.seekBar);
 
 
+       CameraBtView cameraBtView = findViewById(R.id.cameraBt);
+       cameraBtView.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+           }
+       });
 
 
     }

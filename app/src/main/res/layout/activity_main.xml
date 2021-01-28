@@ -18,6 +18,12 @@
         android:text="@string/app_click_video" />
 
 
+    <com.pikachu.upvideo.util.view.CameraBtView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/cameraBt"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,12 +69,14 @@
             style="@style/bt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_video_f" />
+            android:text="@string/app_video_f"
+            android:visibility="gone"/>
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
 
             <RadioButton
