@@ -79,8 +79,8 @@ public class CameraBtView extends View {
     public void setOnClickListener(@Nullable OnClickListener l) {
         super.setOnClickListener(v -> {
             isSed = !isSed;
-            invalidate();
             l.onClick(v);
+            invalidate();
         });
     }
 
