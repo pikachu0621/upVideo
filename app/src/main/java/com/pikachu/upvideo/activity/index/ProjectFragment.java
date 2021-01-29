@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pikachu.upvideo.R;
+import com.pikachu.upvideo.activity.camera.CameraActivity;
 import com.pikachu.upvideo.activity.camera.MainActivity;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.util.tools.ToolAddProjects;
@@ -112,7 +113,10 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
     //列表点击事件
     @Override
     public void onClick(View view,VideoUpJson videoUpJson, int position) {
-        startActivity(new Intent(activity, MainActivity.class));
+        //界面跳转
+        //startActivity(new Intent(activity, MainActivity.class));
+
+        startActivity(new Intent(activity, CameraActivity.class));
     }
 
     //列表长按事件

@@ -9,7 +9,8 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.camera.core.CameraX;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.camera.view.PreviewView;
 
 import com.amap.api.location.AMapLocation;
@@ -22,10 +23,12 @@ import com.pikachu.upvideo.util.tools.ToolGaoDe;
 import com.pikachu.upvideo.util.base.BaseActivity;
 import com.pikachu.upvideo.util.view.CameraBtView;
 
+import java.io.File;
+
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         BaseActivity.OnPermissionListener,
         AMapLocationListener,
-        RadioGroup.OnCheckedChangeListener {
+        RadioGroup.OnCheckedChangeListener, ToolCameraX.OnVideoSavedCallback {
 
     private PreviewView pre;
     private Button mainBt1;
@@ -34,7 +37,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private TextView textGaoDe;
     private SeekBar seekBar;
     private RadioGroup radioGroup;
-
 
 
     //预览/录像
@@ -93,19 +95,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         seekBar = findViewById(R.id.seekBar);
 
 
-       CameraBtView cameraBtView = findViewById(R.id.cameraBt);
-       cameraBtView.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-
-           }
-       });
-
-
     }
-
-
-
 
 
     @SuppressLint("NonConstantResourceId")
@@ -130,7 +120,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                     cameraX.stopVideo();
 
 
-
                 } else {
                     toolGaoDeTools.start();
                     mainBt2.setText("保存录像");
@@ -152,7 +141,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId){
+        switch (checkedId) {
 
             case R.id.radioButton1:
                 mainBt1.setVisibility(View.VISIBLE);
@@ -173,7 +162,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onGranted() {
         //开始预览
-        cameraX = new ToolCameraX(this, pre);
+        cameraX = new ToolCameraX(this, pre, this);
         cameraX.setSeekBar(seekBar);
         //初始高德定位
         toolGaoDeTools = ToolGaoDe.getGaoDeTools(this, this);
@@ -200,5 +189,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     }
 
 
+    //视频保存成功
+    @Override
+    public void onVideoSaved(@NonNull File file, String filePath) {
+        showToast( "已保存到： " + filePath);
+    }
 
+
+    //视频保存失败
+    @Override
+    public void onError(int videoCaptureError, @NonNull String message, @Nullable Throwable cause, String filePath) {
+        showToast( "保存失败： " + message);
+    }
 }

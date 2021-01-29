@@ -34,6 +34,7 @@ public class ToolCameraX {
 
     @SuppressLint("StaticFieldLeak")
     private static ToolCameraX cameraX;
+    private final OnVideoSavedCallback onVideoSavedCallback;
     private Activity activity;
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> instance;
@@ -46,19 +47,26 @@ public class ToolCameraX {
     private SeekBar seekBar;
 
 
-    public static ToolCameraX getCameraX(Activity activity, @IdRes int id) {
-        return getCameraX(activity, activity.findViewById(id));
+    public interface OnVideoSavedCallback {
+        void onVideoSaved(@NonNull File file , String filePath);
+        void onError(int videoCaptureError, @NonNull String message, @Nullable Throwable cause, String filePath);
     }
 
-    public static ToolCameraX getCameraX(Activity activity, PreviewView previewView) {
+
+    public static ToolCameraX getCameraX(Activity activity, @IdRes int id, OnVideoSavedCallback onVideoSavedCallback) {
+        return getCameraX(activity, activity.findViewById(id), onVideoSavedCallback);
+    }
+
+    public static ToolCameraX getCameraX(Activity activity, PreviewView previewView, OnVideoSavedCallback onVideoSavedCallback) {
         if (cameraX == null)
-            cameraX = new ToolCameraX(activity, previewView);
+            cameraX = new ToolCameraX(activity, previewView, onVideoSavedCallback);
         return cameraX;
     }
 
-    public ToolCameraX(Activity activity, PreviewView previewView) {
+    public ToolCameraX(Activity activity, PreviewView previewView, OnVideoSavedCallback onVideoSavedCallback) {
         this.activity = activity;
         this.previewView = previewView;
+        this.onVideoSavedCallback = onVideoSavedCallback;
         //开始预览
         startCamera();
     }
@@ -92,7 +100,6 @@ public class ToolCameraX {
                         /*.setTargetRotation(viewFinder.display.rotation)//设置旋转角度
                         .setAudioRecordSource(MediaRecorder.AudioSource.MIC)//设置音频源麦克风*/
                         .build();
-
 
 
                 if (processCameraProvider != null) {
@@ -165,7 +172,8 @@ public class ToolCameraX {
     //停止录像（停止录像）
     @SuppressLint("RestrictedApi")
     public void stopVideo() {
-        videoBuild.stopRecording(); //停止录制
+        if (videoBuild != null)
+            videoBuild.stopRecording(); //停止录制
     }
 
     //分段
@@ -180,30 +188,31 @@ public class ToolCameraX {
 
         String s = ToolOther.getVideoPath(activity);
         File file = new File(s);
-        if(!file.exists()) file.mkdir();
-        file = new File( s = s + new SimpleDateFormat(
+        if (!file.exists()) file.mkdir();
+        file = new File(s = s + new SimpleDateFormat(
                 "yyyy-MM-dd-HH-mm-ss", Locale.CHINA
         ).format(System.currentTimeMillis()) + ".mp4");
 
         String finalS = s;
-        videoBuild.startRecording(file,Executors.newSingleThreadExecutor() ,
+
+        videoBuild.startRecording(file, Executors.newSingleThreadExecutor(),
                 new VideoCapture.OnVideoSavedCallback() {
-            @Override
-            public void onVideoSaved(@NonNull File file) {
-                //保存视频成功回调，会在停止录制时被调用
-                activity.runOnUiThread(() ->  ToolOther.tw(activity, "已保存到： " + finalS) );
-            }
+                    @Override
+                    public void onVideoSaved(@NonNull File file) {
+                        //保存视频成功回调，会在停止录制时被调用
+                        activity.runOnUiThread(() -> onVideoSavedCallback.onVideoSaved(file,finalS));
+                        //       ToolOther.tw(activity, "已保存到： " + finalS)
+                    }
 
-            @Override
-            public void onError(int videoCaptureError, @NonNull String message,
-                                @Nullable Throwable cause) {
-                //保存失败的回调，可能在开始或结束录制时被调用8
-                Log.e("test_t", "onError: " + message);
-
-                activity.runOnUiThread(() -> ToolOther.tw(activity, "保存失败： " + message));
-
-            }
-        });
+                    @Override
+                    public void onError(int videoCaptureError, @NonNull String message,
+                                        @Nullable Throwable cause) {
+                        //保存失败的回调，可能在开始或结束录制时被调用8
+                        Log.e("test_t", "onError: " + message);
+                        activity.runOnUiThread(() -> onVideoSavedCallback.onError(videoCaptureError,message,cause,finalS) );
+                        //ToolOther.tw(activity, "保存失败： " + message)
+                    }
+                });
 
 
     }

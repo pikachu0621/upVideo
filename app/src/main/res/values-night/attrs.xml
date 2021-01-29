@@ -18,5 +18,17 @@
     </declare-styleable>
 
 
+    <!--    相机按钮  -->
+    <declare-styleable name="CameraBtView">
+        <attr format="float" name="pkMaxToMin"/>
+        <attr format="color" name="pkMaxWasColor"/>
+        <attr format="color" name="pkMaxNoColor"/>
+        <attr format="color" name="pkMinWasColor"/>
+        <attr format="color" name="pkMinNoColor"/>
+        <attr format="boolean" name="pkIsChangeColor"/>
+
+    </declare-styleable>
+
+
 
 </resources>

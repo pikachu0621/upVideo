@@ -50,5 +50,6 @@
     <string name="app_project_noup">未同步</string>
     <string name="app_project_wc">已同步</string>
     <string name="app_project_sv">服务端</string>
+    <string name="app_time">00:00</string>
 
 </resources>

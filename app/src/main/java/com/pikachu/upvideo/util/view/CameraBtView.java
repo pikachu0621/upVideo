@@ -1,13 +1,19 @@
 package com.pikachu.upvideo.util.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
+
+import com.pikachu.upvideo.R;
 
 /**
  * @author Pikachu
@@ -19,20 +25,33 @@ import androidx.annotation.Nullable;
 public class CameraBtView extends View {
 
 
-    private  float maxToMin = 0.2F; // 大圆和小圆的间隔 (百分比 0~1)
+    @FloatRange(from = 0, to = 1)
+    private float maxToMin = 0.2F; // 大圆和小圆的间隔 (百分比 0~1)
     @ColorInt
-    private int maxWasColor = 0x80FF0000 , maxNoColor = 0xFFFFFFFF; // 外部圆 选中/不选中 颜色（大圆颜色）
+    private int maxWasColor = 0x60FF0000, maxNoColor = 0xFFFFFFFF; // 外部圆 选中/不选中 颜色（大圆颜色）
     @ColorInt
-    private int minWasColor = 0xFFFF0000 , minNoColor = 0xFFFF0000; // 内部圆 选中/不选中 颜色（小圆颜色）
+    private int minWasColor = 0xFFFF0000, minNoColor = 0xFFFF0000; // 内部圆 选中/不选中 颜色（小圆颜色）
+    private boolean isChangeColor = false; // 是否在在按下时改变颜色
 
 
     //以下不用改
     private float maxOfRadius = 0; // 外部圆半径（大圆半径）
     private float minOfRadius = 0; // 内部圆半径（小圆半径）
-    private Paint paint = new Paint(); // 画笔
-    private float viewCX = 0 , viewCY = 0  ; // 中心
-    private boolean isSed = false ;
+    private final Paint paint = new Paint(); // 画笔
+    private float viewCX = 0, viewCY = 0; // 中心
+    private boolean isSed = false;
+    private OnClickListener onClickListener;
 
+
+    public interface OnClickListener{
+        /**
+         * 监听点击事件
+         * @param view this
+         * @param isSed 是否点击状态
+         * @return true 点击成功 / false 点击失败
+         */
+        boolean onClick(View view,boolean isSed);
+    }
 
 
     public CameraBtView(Context context) {
@@ -51,8 +70,18 @@ public class CameraBtView extends View {
                         int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
+        @SuppressLint("Recycle")
+        TypedArray array = context.obtainStyledAttributes(
+                attrs, R.styleable.CameraBtView, defStyleAttr, 0);
+        maxToMin = array.getFloat(R.styleable.CameraBtView_pkMaxToMin, maxToMin);
+        if (maxToMin > 1) maxToMin = 1;
+        else if (maxToMin < 0) maxToMin = 0;
+        maxWasColor = array.getColor(R.styleable.CameraBtView_pkMaxWasColor, maxWasColor);
+        minWasColor = array.getColor(R.styleable.CameraBtView_pkMinWasColor, minWasColor);
+        maxNoColor = array.getColor(R.styleable.CameraBtView_pkMaxNoColor, maxNoColor);
+        minNoColor = array.getColor(R.styleable.CameraBtView_pkMinNoColor, minNoColor);
+        isChangeColor = array.getBoolean(R.styleable.CameraBtView_pkIsChangeColor, isChangeColor);
     }
-
 
     private void getRadius(int widthMeasureSpec, int heightMeasureSpec) {
         maxOfRadius = Math.min(widthMeasureSpec, heightMeasureSpec) >> 1;
@@ -68,28 +97,43 @@ public class CameraBtView extends View {
         paint.setDither(true);
         paint.setStyle(Paint.Style.FILL);
 
-        paint.setColor( isSed ? maxWasColor : maxNoColor );
-        canvas.drawCircle(viewCX, viewCY, maxOfRadius, paint );
-        paint.setColor( isSed ? minWasColor : minNoColor );
-        canvas.drawCircle( viewCX, viewCY, isSed ? minOfRadius * 0.7F : minOfRadius, paint );
+        paint.setColor(isSed ? maxWasColor : maxNoColor);
+        canvas.drawCircle(viewCX, viewCY, maxOfRadius, paint);
+        paint.setColor(isSed ? minWasColor : minNoColor);
+        canvas.drawCircle(viewCX, viewCY, isSed ? minOfRadius * 0.7F : minOfRadius, paint);
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setOnClickListener(@Nullable OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
 
     @Override
-    public void setOnClickListener(@Nullable OnClickListener l) {
-        super.setOnClickListener(v -> {
-            isSed = !isSed;
-            l.onClick(v);
+    public boolean onTouchEvent(MotionEvent event) {
+        if (onClickListener != null) {
+            int action = event.getAction();
+            if (action == MotionEvent.ACTION_DOWN && isChangeColor)
+                isSed = !isSed;
+            else if (action == MotionEvent.ACTION_UP) {
+                if (onClickListener.onClick(this, !isSed))
+                    isSed = !isSed;
+            }
             invalidate();
-        });
-    }
+            return true;
+        }
+        return super.onTouchEvent(event);
 
+    }
 
     public float getMaxToMin() {
         return maxToMin;
     }
 
-    public void setMaxToMin(float maxToMin) {
+
+    public void setMaxToMin(@SuppressLint("SupportAnnotationUsage")
+                            @FloatRange(from = 0, to = 1) float maxToMin) {
         this.maxToMin = maxToMin;
         invalidate();
     }
@@ -137,5 +181,13 @@ public class CameraBtView extends View {
     public void setSed(boolean sed) {
         isSed = sed;
         invalidate();
+    }
+
+    public boolean isChangeColor() {
+        return isChangeColor;
+    }
+
+    public void setChangeColor(boolean changeColor) {
+        isChangeColor = changeColor;
     }
 }
