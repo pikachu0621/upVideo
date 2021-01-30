@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="20dp">
 
-    <EditText
+    <com.pikachu.upvideo.util.view.PkEditText
         android:id="@+id/ui_ed_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +16,7 @@
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="@dimen/permission_sp_14"
-        android:maxLength="80"/>
+        android:maxLength="80" />
 
     <TextView
         style="@style/text1"
@@ -30,7 +31,7 @@
         android:layout_marginStart="@dimen/permission_dp_10"
         />
 
-    <EditText
+    <com.pikachu.upvideo.util.view.PkEditText
         android:id="@+id/ui_ed_edit2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

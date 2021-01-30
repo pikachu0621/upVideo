@@ -30,5 +30,14 @@
     </declare-styleable>
 
 
+    <!--   正则编辑框  -->
+    <declare-styleable name="PkEditText">
+        <!--正则表达式-->
+        <attr format="string" name="pkRegex"/>
+        <!--是否与表达式相反-->
+        <attr format="boolean" name="pkAnti"/>
+    </declare-styleable>
+
+
 
 </resources>

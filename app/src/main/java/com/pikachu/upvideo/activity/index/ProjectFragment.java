@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -15,7 +16,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.activity.camera.CameraActivity;
 import com.pikachu.upvideo.activity.camera.MainActivity;
+import com.pikachu.upvideo.activity.list.ListActivity;
 import com.pikachu.upvideo.cls.VideoUpJson;
+import com.pikachu.upvideo.util.AppInfo;
 import com.pikachu.upvideo.util.tools.ToolAddProjects;
 import com.pikachu.upvideo.util.tools.ToolOther;
 
@@ -113,10 +116,15 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
     //列表点击事件
     @Override
     public void onClick(View view,VideoUpJson videoUpJson, int position) {
-        //界面跳转
-        //startActivity(new Intent(activity, MainActivity.class));
 
-        startActivity(new Intent(activity, CameraActivity.class));
+        Class<?> cls =  ListActivity.class;
+       /* if ( videoUpJson.getListVideos().size() <= 0)
+            cls = CameraActivity.class; //项目没有节点 直接进入拍摄*/
+        Intent intent = new Intent(activity, cls);
+        intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJson);
+        intent.putExtra(AppInfo.START_ACTIVITY_KEY_2, AppInfo.START_CAMERA_TYPE_1);
+        startActivity(intent);
+
     }
 
     //列表长按事件

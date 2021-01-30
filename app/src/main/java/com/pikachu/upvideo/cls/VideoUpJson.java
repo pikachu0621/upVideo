@@ -38,7 +38,7 @@ public class VideoUpJson implements Serializable {
     private int projectVideoWh;
     //视频清晰度 用在子视频上也要有。这里的优先级低于子视频上的  0 (720P) 1()
     private int projectVideoPx;
-    //list video
+    //子项目
     private List<SonProject> listVideos;
 
 

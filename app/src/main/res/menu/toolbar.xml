@@ -8,14 +8,29 @@
         android:title="@string/app_todo"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
+
+
+
     <item
         android:id="@+id/item1"
-        android:title="全选"
+        android:title="同步全部项目"
         app:showAsAction="never"/>
-    <item
-        android:id="@+id/item2"
-        android:title="删除"
-        app:showAsAction="never"/>
+    <item android:title="编辑">
+        <menu>
+            <item
+                android:id="@+id/item2"
+                android:title="全选"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/item3"
+                android:title="删除"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/item4"
+                android:title="同步已选项目"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
 
 
 

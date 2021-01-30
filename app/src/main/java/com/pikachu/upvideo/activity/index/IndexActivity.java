@@ -42,7 +42,7 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_index, R.id.index_view/*, R.id.index_view1*/);
+        setContentView(R.layout.activity_index, R.id.bar_view/*, R.id.index_view1*/);
         initView();
         init();
     }
@@ -117,7 +117,7 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
 
 
     private void initView() {
-        indexToolbar = findViewById(R.id.index_toolbar);
+        indexToolbar = findViewById(R.id.bar_toolbar);
         indexNav = findViewById(R.id.index_nav);
         indexDrawer = findViewById(R.id.index_drawer);
         indexFloatingActionButton = findViewById(R.id.index_floatingActionButton);
@@ -131,7 +131,7 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         mSearchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_search));
-        mSearchView.setMaxWidth(780);
+        mSearchView.setMaxWidth(770);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -158,10 +158,16 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item1:
-                showToast("1");
+                showToast("同步全部项目");
                 break;
             case R.id.item2:
-                showToast("2");
+                showToast("全选");
+                break;
+            case R.id.item3:
+                showToast("删除");
+                break;
+            case R.id.item4:
+                showToast("同步已选项目");
                 break;
         }
         return false;

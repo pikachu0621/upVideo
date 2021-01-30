@@ -1,17 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+
+    <item
+        android:id="@+id/nav_item1"
+        android:icon="@drawable/ic_c_history_up"
+        android:title="@string/app_nav_item1" />
+    <item
+        android:id="@+id/nav_item2"
+        android:icon="@drawable/ic_c_map"
+        android:title="@string/app_nav_item2" />
+
+    <item android:title="Settings"
+        tools:ignore="HardcodedText">
+
+        <menu>
+            <item
+                android:id="@+id/nav_item3"
+                android:icon="@drawable/ic_c_settings"
+                android:title="@string/app_nav_item3" />
+            <item
+                android:id="@+id/nav_item4"
+                android:icon="@drawable/ic_c_black"
+                android:title="@string/app_nav_item4" />
+        </menu>
+
+
+    </item>
+
+
+    <!--<group android:checkableBehavior="single">
+
         <item
+            android:icon="@drawable/ic_c_history_up"
             android:id="@+id/nav_item1"
             android:title="@string/app_nav_item1" />
         <item
+            android:icon="@drawable/ic_c_map"
             android:id="@+id/nav_item2"
             android:title="@string/app_nav_item2"/>
         <item
+            android:icon="@drawable/ic_c_settings"
             android:id="@+id/nav_item3"
             android:title="@string/app_nav_item3"/>
         <item
+            android:icon="@drawable/ic_c_black"
             android:id="@+id/nav_item4"
             android:title="@string/app_nav_item4"/>
-    </group>
+
+    </group>-->
 </menu>

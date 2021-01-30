@@ -1,3 +1,12 @@
+/**
+ *
+ *
+ * 多余
+ *
+ *
+ *
+ */
+
 package com.pikachu.upvideo.activity.camera;
 
 import android.Manifest;
@@ -21,7 +30,6 @@ import com.pikachu.upvideo.util.state.PKStatusBarTools;
 import com.pikachu.upvideo.util.tools.ToolCameraX;
 import com.pikachu.upvideo.util.tools.ToolGaoDe;
 import com.pikachu.upvideo.util.base.BaseActivity;
-import com.pikachu.upvideo.util.view.CameraBtView;
 
 import java.io.File;
 

@@ -17,6 +17,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.cls.VideoUpJson;
+import com.pikachu.upvideo.util.AppInfo;
 import com.pikachu.upvideo.util.base.BaseActivity;
 import com.pikachu.upvideo.util.state.PKStatusBarTools;
 import com.pikachu.upvideo.util.tools.ToolCameraX;
@@ -27,7 +28,8 @@ import com.pikachu.upvideo.util.view.QMUIRadiusImageView;
 
 import java.io.File;
 
-public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunListener, AMapLocationListener, ToolCameraX.OnVideoSavedCallback {
+public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunListener,
+        AMapLocationListener, ToolCameraX.OnVideoSavedCallback {
 
     private PreviewView caPre;
     private LinearLayout caLi1;
@@ -40,6 +42,8 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
     private ToolGaoDe toolGaoDeTools;
     private TextView textGaoDe;
     private boolean dStop = false;
+    private VideoUpJson videoUpJson;
+    private int type;
 
 
     @Override
@@ -52,6 +56,9 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
 
     private void init() {
 
+        //根目项目数据
+        videoUpJson = getSerializableExtra(AppInfo.START_ACTIVITY_KEY_1, VideoUpJson.class);
+        type = getIntExtra(AppInfo.START_ACTIVITY_KEY_2, 1);
 
         //开始预览
         cameraX = new ToolCameraX(this, caPre , this);
@@ -61,43 +68,37 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
         timer = ToolTimer.getTimer(this, this);
 
 
-        caCameraBt1.setOnClickListener(new CameraBtView.OnClickListener() {
-            @Override
-            public boolean onClick(View view, boolean isSed) {
-                if (isSed) {
-                    // 开始录像
-                    timer.run(); // 开始计时
-                    toolGaoDeTools.start(); // 开始定位
-                    cameraX.startVideo(); // 开始录像
-                    caLi1.setVisibility(View.VISIBLE);
-                    showToast("开始录像");
+        caCameraBt1.setOnClickListener((view, isSed) -> {
+            if (isSed) {
+                // 开始录像
+                timer.run(); // 开始计时
+                toolGaoDeTools.start(); // 开始定位
+                cameraX.startVideo(); // 开始录像
+                caLi1.setVisibility(View.VISIBLE);
+                showToast("开始录像");
 
-                } else {
-                    //结束录像
-                    timer.afresh();; // 结束计时
-                    toolGaoDeTools.stop(); // 结束定位
-                    cameraX.stopVideo(); // 结束录像/并保存
-                    caLi1.setVisibility(View.GONE);
-                    showToast("结束录像");
-                }
-                dStop = false; //用于弹框退出
-                return true;
+            } else {
+                //结束录像
+                timer.afresh();; // 结束计时
+                toolGaoDeTools.stop(); // 结束定位
+                cameraX.stopVideo(); // 结束录像/并保存
+                caLi1.setVisibility(View.GONE);
+                showToast("结束录像");
             }
+            dStop = false; //用于弹框退出
+            return true;
         });
 
-        caCameraBt2.setOnClickListener(new CameraBtView.OnClickListener() {
-            @Override
-            public boolean onClick(View view, boolean isSed) {
-                if (caCameraBt1.isSed()){
-                    timer.afresh();
-                    timer.run();
-                    showToast("在录像");
-                } else
-                    showToast("没录像");
-                //showToast("分段");
+        caCameraBt2.setOnClickListener((view, isSed) -> {
+            if (caCameraBt1.isSed()){
+                timer.afresh();
+                timer.run();
+                showToast("在录像");
+            } else
+                showToast("没录像");
+            //showToast("分段");
 
-                return true;
-            }
+            return true;
         });
 
     }
@@ -182,19 +183,17 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
     public void onVideoSaved(@NonNull File file, String filePath) {
         showToast( "已保存到： " + filePath);
 
-
-        if ( dStop )
-            finish();
+        if ( dStop ) finish();
     }
 
 
     //视频保存失败
     @Override
-    public void onError(int videoCaptureError, @NonNull String message, @Nullable Throwable cause, String filePath) {
+    public void onError(int videoCaptureError, @NonNull String message, @Nullable Throwable cause,
+                        String filePath) {
         showToast( "保存失败： " + message);
 
-        if ( dStop )
-            finish();
+        if ( dStop ) finish();
     }
 
 }

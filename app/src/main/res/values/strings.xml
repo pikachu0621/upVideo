@@ -41,6 +41,9 @@
     <string name="app_project_add">添加</string>
     <string name="app_project_cancel">取消</string>
     <string name="app_add_project_hin">请输入项目名称，可包含中文</string>
+    <string name="app_add_son_project_hin">请输入节点名，可包含中文</string>
+
+
 
 
     <string name="app_video_px">视频清晰度</string>

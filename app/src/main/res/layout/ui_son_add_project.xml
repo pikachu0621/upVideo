@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <com.pikachu.upvideo.util.view.PkEditText
+        android:id="@+id/ui_son_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/permission_dp_10"
+        android:hint="@string/app_add_son_project_hin"
+        android:lines="1"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/permission_sp_14"
+        android:maxLength="80"/>
+
+</LinearLayout>

@@ -11,6 +11,24 @@ import android.Manifest;
 public class AppInfo {
 
 
+
+    //时间格式
+    public static String timeStr =  "yyyy-MM-dd HH:mm:ss" ;
+
+    //定位失败重试次数
+    public static int gaoDeInt   = 3;
+    // 项目保存路径 /data/user/0/packname/files + videoPath
+    public static String videoPath = "/video/";
+    //项目保存格式
+    public static String videoProjectName  = "index.json";
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
     //权限
     public static final String[] permissions = {
             Manifest.permission.CAMERA,//相机权限
@@ -27,18 +45,12 @@ public class AppInfo {
             Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS //申请调用A-GPS模块
     };
 
-    //时间格式
-    public static String timeStr =  "yyyy-MM-dd HH:mm:ss" ;
+    public static final String START_ACTIVITY_KEY_1  = "KEY_1";
 
-    //定位失败重试次数
-    public static int gaoDeInt   = 3;
-    // 项目保存路径 /data/user/0/packname/files + videoPath
-    public static String videoPath = "/video/";
-    //项目保存格式
-    public static String videoProjectName  = "index.json";
-
-
-
+    public static final String START_ACTIVITY_KEY_2  = "KEY_2";
+    public static final int START_CAMERA_TYPE_1  = 1 , // 添加节点跳转拍摄
+            START_CAMERA_TYPE_2  = 2 , //添加历史拍摄
+            START_CAMERA_TYPE_3  = 3; //修改历史拍摄
 
 
 

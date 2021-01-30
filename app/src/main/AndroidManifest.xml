@@ -29,7 +29,7 @@
         android:theme="@style/Theme.UpVideo">
         <activity android:name=".activity.camera.CameraActivity"></activity>
         <activity android:name=".activity.camera.MainActivity" />
-        <activity android:name=".activity.ListActivity" />
+        <activity android:name=".activity.list.ListActivity" />
         <activity android:name=".activity.index.IndexActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -18,6 +18,7 @@ import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.activity.index.ProjectFragment;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.util.AppInfo;
+import com.pikachu.upvideo.util.view.PkEditText;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,8 +45,8 @@ public class ToolAddProjects {
     private ToolGaoDe toolGaoDe;
     private int gaoDeP = 0; //已定位次数
     private boolean gaoDeStop; //是否已暂停
-    private EditText edit;
-    private EditText edit2;
+    private PkEditText edit;
+    private PkEditText edit2;
     @SuppressLint("InflateParams")
     private View inflate;
     private Spinner addSpinner1;
@@ -180,7 +181,7 @@ public class ToolAddProjects {
                     if (isC) {
                         toolGaoDe.stop();
                         gaoDeStop = true;
-                    } else if (gaoDeP < 3) return;
+                    } else if (gaoDeP < AppInfo.gaoDeInt) return;
                     else {
                         toolGaoDe.stop();
                         gaoDeStop = true;
@@ -201,15 +202,17 @@ public class ToolAddProjects {
                                 new File(videoPath + name + "/" + AppInfo.videoProjectName)
                         );
                         out.write(r);
+                        out.flush();
                         out.close();
+
 
                        /* BufferedWriter out = new BufferedWriter(new FileWriter(videoPath + name + "/" + AppInfo.videoProjectName));
                         out.write(r);
                         out.close();*/
                         ToolOther.tw(activity, "创建成功");
                         //显示按钮
-                        floatingActionButton.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
+                        /*floatingActionButton.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);*/
                         //刷新数据
                         projectFragment.refresh();
 
@@ -217,9 +220,10 @@ public class ToolAddProjects {
                         e.printStackTrace();
                         ToolOther.tw(activity, "创建失败");
                     }
-                    //显示按钮
+
                     floatingActionButton.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
+
                 });
 
                 //开始定位
@@ -255,7 +259,7 @@ public class ToolAddProjects {
     }
 
 
-    //读取全部主项目
+    //读取全部主项目包括子项目 //这里不能用其他软件删除项目
     public List<VideoUpJson> readProject() {
 
         String[] list1 = new File(videoPath).list((dir, name) -> {
