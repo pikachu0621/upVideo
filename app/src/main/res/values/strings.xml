@@ -14,19 +14,16 @@
     <string name="app_nav_item4">退出</string>
     <string name="app_todo">TODO</string>
 
-
     <string-array name="app_fs">
         <item> 不分段 </item>
         <item> 手动分段 </item>
         <item> 按距离分段（米）</item>
         <item> 按时间分段（分）</item>
     </string-array>
-
     <string-array name="app_pops">
         <item> 4:3 </item>
         <item> 16:9  </item>
     </string-array>
-
     <string-array name="app_pxs">
         <item> 720P 30FPS </item>
         <item> 480P 30FPS </item>
@@ -41,9 +38,15 @@
     <string name="app_project_add">添加</string>
     <string name="app_project_cancel">取消</string>
     <string name="app_add_project_hin">请输入项目名称，可包含中文</string>
-    <string name="app_add_son_project_hin">请输入节点名，可包含中文</string>
 
 
+
+    <string name="app_son_add_project">添加节点</string>
+    <string name="app_son_add_project_msg">用于在地图上显示标记</string>
+    <string name="app_son_add_project_hin">请输入节点名</string>
+    <string name="app_son_add_project_hin1">请输入节点备注,可空</string>
+
+    <string name="app_son_add_video">添加视频</string>
 
 
     <string name="app_video_px">视频清晰度</string>

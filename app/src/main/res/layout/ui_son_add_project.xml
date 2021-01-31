@@ -10,11 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/permission_dp_10"
-        android:hint="@string/app_add_son_project_hin"
+        android:hint="@string/app_son_add_project_hin"
         android:lines="1"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="@dimen/permission_sp_14"
-        android:maxLength="80"/>
+        android:maxLength="20"/>
+
+    <com.pikachu.upvideo.util.view.PkEditText
+        android:id="@+id/ui_son_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/permission_dp_20"
+        android:hint="@string/app_son_add_project_hin1"
+        android:lines="5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/permission_sp_14"
+        android:maxLength="200"
+        android:gravity="top"/>
 
 </LinearLayout>

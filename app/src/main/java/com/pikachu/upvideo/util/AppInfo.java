@@ -49,9 +49,13 @@ public class AppInfo {
 
     public static final String START_ACTIVITY_KEY_2  = "KEY_2";
     public static final int START_CAMERA_TYPE_1  = 1 , // 添加节点跳转拍摄
-            START_CAMERA_TYPE_2  = 2 , //添加历史拍摄
-            START_CAMERA_TYPE_3  = 3; //修改历史拍摄
+            START_CAMERA_TYPE_2  = 2 , //添加历史跳转拍摄
+            START_CAMERA_TYPE_3  = 3; //修改历史跳转拍摄
 
 
+
+
+    ////////////////////完成子项目 1.添加  2.删除  3.历史
+    ////////////////// 适配器完成 ，明天做添加项目
 
 }

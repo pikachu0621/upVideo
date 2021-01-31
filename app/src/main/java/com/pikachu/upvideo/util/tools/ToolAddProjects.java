@@ -7,11 +7,14 @@ package com.pikachu.upvideo.util.tools;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.pikachu.upvideo.R;
@@ -53,7 +56,7 @@ public class ToolAddProjects {
     private Spinner addSpinner2;
     private Spinner addSpinner3;
     private AlertDialog.Builder builder;
-    private String name;
+    private String name,msg;
     private int selectedItemPosition;
     private int selectedItemPosition1;
     private int selectedItemPosition2;
@@ -147,7 +150,6 @@ public class ToolAddProjects {
             }
             integer = Integer.parseInt(sEdit2);
 
-
             if (name.equals("")) ToolOther.tw(activity, "请输入项目名");
             else if (isProjectName(name)) ToolOther.tw(activity, "本地已存在该项目，换个名称吧");
             else {
@@ -196,34 +198,24 @@ public class ToolAddProjects {
                     //Gson 转 String
                     String r = new Gson().toJson(videoUpJson);
                     try {
-
-
                         Writer out = new FileWriter(
                                 new File(videoPath + name + "/" + AppInfo.videoProjectName)
                         );
                         out.write(r);
                         out.flush();
                         out.close();
-
-
-                       /* BufferedWriter out = new BufferedWriter(new FileWriter(videoPath + name + "/" + AppInfo.videoProjectName));
-                        out.write(r);
-                        out.close();*/
                         ToolOther.tw(activity, "创建成功");
                         //显示按钮
-                        /*floatingActionButton.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);*/
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         //刷新数据
                         projectFragment.refresh();
-
                     } catch (IOException e) {
                         e.printStackTrace();
                         ToolOther.tw(activity, "创建失败");
                     }
-
                     floatingActionButton.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
-
                 });
 
                 //开始定位
@@ -257,6 +249,45 @@ public class ToolAddProjects {
 
         return false;
     }
+
+
+
+
+    //添加节点
+    public void addSonProject(RecyclerView.Adapter<?> rea){
+
+
+        inflate = LayoutInflater.from(activity).inflate(R.layout.ui_son_add_project, null);
+        edit = inflate.findViewById(R.id.ui_son_name);
+        edit2 = inflate.findViewById(R.id.ui_son_msg);
+
+
+
+        builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.app_son_add_project)
+                .setMessage(R.string.app_son_add_project_msg);
+        builder.setView(inflate);
+        builder.setPositiveButton(R.string.app_project_add, (dialog, which) -> {
+
+            name = edit.getText().toString();
+            msg = edit2.getText().toString();
+            if (name.equals("")) {
+                ToolOther.tw(activity,"节点名不可为空");
+                return;
+            }
+
+
+
+
+
+        });
+        builder.setNegativeButton(R.string.app_project_cancel, null);
+        //builder.setCancelable(false);
+        builder.show();
+    }
+
+
+
 
 
     //读取全部主项目包括子项目 //这里不能用其他软件删除项目
@@ -295,12 +326,8 @@ public class ToolAddProjects {
 
 
 
-
-
-
-
     //读取文件
-    private String readFile(String path) {
+    public static String readFile(String path) {
 
         File file = new File(path);
         StringBuilder stringBuffer = new StringBuilder();

@@ -39,7 +39,7 @@ public class VideoUpJson implements Serializable {
     //视频清晰度 用在子视频上也要有。这里的优先级低于子视频上的  0 (720P) 1()
     private int projectVideoPx;
     //子项目
-    private List<SonProject> listVideos;
+    private List<SonProject> listSon;
 
 
 
@@ -48,7 +48,7 @@ public class VideoUpJson implements Serializable {
                        String projectAddress, int projectType,
                        int projectMode, long projectModeInfo,
                        int projectVideoWh, int projectVideoPx,
-                       List<SonProject> listVideos) {
+                       List<SonProject> listSon) {
         this.projectName = projectName;
         this.projectTime = projectTime;
         this.projectAddress = projectAddress;
@@ -57,7 +57,7 @@ public class VideoUpJson implements Serializable {
         this.projectModeInfo = projectModeInfo;
         this.projectVideoWh = projectVideoWh;
         this.projectVideoPx = projectVideoPx;
-        this.listVideos = listVideos;
+        this.listSon = listSon;
     }
 
 
@@ -68,9 +68,11 @@ public class VideoUpJson implements Serializable {
 
         //子项目名
         private String sonProjectName;
+        //子项目备注
+        private String sonProjectMsg;
         //子项目开始地点数据
-        private MapInfo sonProjectStartMapInfo;
-        private MapInfo sonProjectEndMapInfo;
+        private MapInfo sonProjectStartMapInfo; // 动态更新
+        private MapInfo sonProjectEndMapInfo; // 动态更新
         //历史视频
         private List<ListHisVideo> sonProjectVideo;
 
@@ -144,6 +146,14 @@ public class VideoUpJson implements Serializable {
 
         public void setSonProjectName(String sonProjectName) {
             this.sonProjectName = sonProjectName;
+        }
+
+        public String getSonProjectMsg() {
+            return sonProjectMsg;
+        }
+
+        public void setSonProjectMsg(String sonProjectMsg) {
+            this.sonProjectMsg = sonProjectMsg;
         }
 
         public MapInfo getSonProjectStartMapInfo() {
@@ -540,11 +550,11 @@ public class VideoUpJson implements Serializable {
         this.projectVideoPx = projectVideoPx;
     }
 
-    public List<SonProject> getListVideos() {
-        return listVideos;
+    public List<SonProject> getListSon() {
+        return listSon;
     }
 
-    public void setListVideos(List<SonProject> listVideos) {
-        this.listVideos = listVideos;
+    public void setListSon(List<SonProject> listSon) {
+        this.listSon = listSon;
     }
 }

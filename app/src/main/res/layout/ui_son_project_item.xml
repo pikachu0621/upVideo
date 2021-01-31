@@ -11,7 +11,7 @@
 
 
     <LinearLayout
-        android:id="@+id/ui_p_lin"
+        android:id="@+id/ui_son_lin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -23,62 +23,84 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="14dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
-                    <TextView
-                        style="@style/text1"
-                        android:id="@+id/ui_p_text4"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:text="@string/app_todo"
-                        android:id="@+id/ui_p_text10"
-                        android:textColor="@color/black_2"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
-
-                </LinearLayout>
-
-
+                <TextView
+                    style="@style/text1"
+                    android:id="@+id/ui_son_text1"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_weight="1" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_son_add"/>
+                    android:src="@drawable/ic_son_add"
+                    android:id="@+id/ui_son_addProject"
+                    android:contentDescription="@string/app_son_add_video" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="14dp">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/permission_dp_20"
+                    android:layout_marginEnd="@dimen/permission_dp_20"
+                    android:background="@drawable/project_son_from"
+                    android:text="@string/app_todo"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:padding="6dp"
+                    android:id="@+id/ui_son_text2"
+                    android:ellipsize="end"
+                    android:lines="6"
+                    android:minLines="6"
+                    android:maxLines="6"
+                    android:gravity="center_vertical"/>
+
+                <ImageView
+                    android:layout_height="match_parent"
+                    android:layout_width="@dimen/permission_dp_40"
+                    android:gravity="center"
+                    android:src="@drawable/ic_son_get_to"
+                    android:contentDescription="@string/app_todo" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/permission_dp_20"
+                    android:layout_marginEnd="@dimen/permission_dp_20"
+                    android:background="@drawable/project_son_to"
+                    android:text="@string/app_todo"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:padding="6dp"
+                    android:id="@+id/ui_son_text3"
+                    android:lines="6"
+                    android:minLines="6"
+                    android:maxLines="6"
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:text="@string/app_todo"
-                android:id="@+id/ui_p_text5"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:layout_marginTop="@dimen/permission_dp_10"
-                android:layout_marginStart="14dp"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="@string/app_todo"
-                android:id="@+id/ui_p_text9"
+                android:id="@+id/ui_son_text4"
                 android:textColor="@color/black_2"
                 android:textSize="12sp"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="14dp"/>
+                android:layout_marginTop="@dimen/permission_dp_10" />
+
             <!--android:gravity="end"
             @dimen/permission_dp_20-->
         </LinearLayout>
@@ -88,7 +110,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:layout_marginBottom="14dp"/>
+            android:layout_marginBottom="14dp"
+            android:id="@+id/ui_son_recycler"/>
 
     </LinearLayout>
 

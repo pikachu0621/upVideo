@@ -85,7 +85,7 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
                 caLi1.setVisibility(View.GONE);
                 showToast("结束录像");
             }
-            dStop = false; //用于弹框退出
+            dStop = false; // 用于弹框退出
             return true;
         });
 
@@ -150,6 +150,7 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
 
 
 
+
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
@@ -176,8 +177,6 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
         return super.onKeyUp(keyCode, event);
     }
 
-
-
     //视频保存成功
     @Override
     public void onVideoSaved(@NonNull File file, String filePath) {
@@ -195,5 +194,10 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
 
         if ( dStop ) finish();
     }
+
+
+
+
+
 
 }

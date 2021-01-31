@@ -75,8 +75,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //时间
         holder.uiPText9.setText(videoUpJson.getProjectTime());
         //事件
-        holder.uiPLin.setOnClickListener(v ->
-                onClickAndLongClickListener.onClick(v,videoUpJson,position));
+        holder.uiPLin.setOnClickListener(v -> onClickAndLongClickListener.onClick(v,videoUpJson,position));
         holder.uiPLin.setOnLongClickListener(v ->
                 onClickAndLongClickListener.onLongClick(v,videoUpJson,position));
     }
