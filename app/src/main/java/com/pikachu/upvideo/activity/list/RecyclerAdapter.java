@@ -16,8 +16,11 @@ import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.cls.VideoUpJson.SonProject.ListHisVideo;
 import com.pikachu.upvideo.cls.VideoUpJson.SonProject;
+import com.pikachu.upvideo.util.tools.ToolOther;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -69,6 +72,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         //name
         holder.uiSonText1.setText(sonProject.getSonProjectName());
+        //time
+        holder.uiSonText5.setText(ToolOther.getTime(
+                sonProject.getSonProjectStartMapInfo().getTime()
+        ));
+
         //from
         String fromStr = "经度：" + sonProject.getSonProjectStartMapInfo().getLongitude() + "\n" +
                 "纬度：" + sonProject.getSonProjectStartMapInfo().getLatitude() + "\n" +
@@ -113,6 +121,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout uiSonLin;
         public TextView uiSonText1;
+        public TextView uiSonText5;
         public ImageView uiSonAddProject;
         public TextView uiSonText2;
         public TextView uiSonText3;
@@ -123,6 +132,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(itemView);
             uiSonLin = itemView.findViewById(R.id.ui_son_lin);
             uiSonText1 = itemView.findViewById(R.id.ui_son_text1);
+            uiSonText5 = itemView.findViewById(R.id.ui_son_text5);
             uiSonAddProject = itemView.findViewById(R.id.ui_son_addProject);
             uiSonText2 = itemView.findViewById(R.id.ui_son_text2);
             uiSonText3 = itemView.findViewById(R.id.ui_son_text3);

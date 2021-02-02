@@ -105,7 +105,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/permission_dp_20"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+
+
+
+
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -116,7 +122,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_pro_fd"/>
+                    android:src="@drawable/ic_pro_fd"
+                    android:contentDescription="@string/app_todo" />
 
 
                 <TextView
@@ -139,7 +146,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_pro_pop"/>
+                    android:src="@drawable/ic_pro_pop"
+                    android:contentDescription="@string/app_todo" />
 
 
                 <TextView
@@ -162,7 +170,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_pro_px"/>
+                    android:src="@drawable/ic_pro_vpx"
+                    android:contentDescription="@string/app_todo" />
 
 
                 <TextView

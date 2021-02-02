@@ -1,6 +1,8 @@
 package com.pikachu.upvideo.util.tools;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
@@ -34,13 +36,26 @@ public class ToolOther {
 
 
     @SuppressLint("SimpleDateFormat")
-    public static String getTime(String pattern){
-        return new SimpleDateFormat(pattern).format(new Date());
+    public static String getTime(String pattern, long time){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        if (time == 0)
+            return simpleDateFormat.format(new Date());
+        return simpleDateFormat.format(time);
     }
+
+    public static String getTime(String pattern){
+        return getTime(pattern,0);
+    }
+
 
     public static String getTime(){
         return getTime(AppInfo.timeStr);
     }
+
+    public static String getTime(long time){
+        return getTime(AppInfo.timeStr,time);
+    }
+
 
     /**
      * dp  转  px
@@ -90,6 +105,21 @@ public class ToolOther {
         layoutParams.height = getStatusBarHeight(context)+attachValue;
         view.setLayoutParams(layoutParams);
     }
+
+
+    public static Dialog showDialog(Context context,String title,String msg){
+        ProgressDialog progressDialog=new ProgressDialog(context);
+        if (title != null && !title.equals(""))
+            progressDialog.setTitle(title);
+        if (msg != null && !msg.equals(""))
+            progressDialog.setMessage(msg);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        return progressDialog;
+    }
+
+
+
 
 
 }

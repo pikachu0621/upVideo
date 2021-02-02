@@ -29,12 +29,27 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-                <TextView
-                    style="@style/text1"
-                    android:id="@+id/ui_son_text1"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:layout_weight="1" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1" >
+                    <TextView
+                        style="@style/text1"
+                        android:id="@+id/ui_son_text1"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:text="@string/app_todo"
+                        android:id="@+id/ui_son_text5"
+                        android:textColor="@color/black_2"
+                        android:textSize="11sp"
+                        android:layout_marginTop="2dp"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -53,19 +68,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="@dimen/permission_dp_20"
-                    android:layout_marginEnd="@dimen/permission_dp_20"
+                    android:layout_marginStart="@dimen/permission_dp_10"
+                    android:layout_marginEnd="@dimen/permission_dp_10"
                     android:background="@drawable/project_son_from"
                     android:text="@string/app_todo"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     android:padding="6dp"
                     android:id="@+id/ui_son_text2"
                     android:ellipsize="end"
-                    android:lines="6"
-                    android:minLines="6"
-                    android:maxLines="6"
-                    android:gravity="center_vertical"/>
+                    android:lines="4"
+                    android:minLines="4"
+                    android:maxLines="4"
+                    android:gravity="center_vertical"
+                    tools:ignore="SmallSp" />
 
                 <ImageView
                     android:layout_height="match_parent"
@@ -78,17 +94,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="@dimen/permission_dp_20"
-                    android:layout_marginEnd="@dimen/permission_dp_20"
+                    android:layout_marginStart="@dimen/permission_dp_10"
+                    android:layout_marginEnd="@dimen/permission_dp_10"
                     android:background="@drawable/project_son_to"
                     android:text="@string/app_todo"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     android:padding="6dp"
                     android:id="@+id/ui_son_text3"
-                    android:lines="6"
-                    android:minLines="6"
-                    android:maxLines="6"
+                    android:lines="4"
+                    android:minLines="4"
+                    android:maxLines="4"
                     android:gravity="center_vertical"/>
             </LinearLayout>
 

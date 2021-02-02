@@ -36,6 +36,8 @@
         <attr format="string" name="pkRegex"/>
         <!--是否与表达式相反-->
         <attr format="boolean" name="pkAnti"/>
+        <!--是否与表达式相反-->
+        <attr format="boolean" name="pkOpen"/>
     </declare-styleable>
 
 

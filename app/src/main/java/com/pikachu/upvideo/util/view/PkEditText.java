@@ -28,7 +28,7 @@ public class PkEditText extends EditText {
 
     private static String regex = "^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$";
     private static boolean isAnti = false;
-
+    private static  boolean isOpen = true;
 
 
     public PkEditText(Context context) {
@@ -52,6 +52,7 @@ public class PkEditText extends EditText {
         if (regex != null && !regex.equals(""))
             PkEditText.regex = regex;
         isAnti = array.getBoolean(R.styleable.PkEditText_pkAnti, isAnti);
+        isOpen = array.getBoolean(R.styleable.PkEditText_pkOpen, isOpen);
     }
 
 
@@ -78,7 +79,10 @@ public class PkEditText extends EditText {
          */
         @Override
         public boolean commitText(CharSequence text, int newCursorPosition) {
-            if ( Pattern.matches(regex, text.toString()) ^ isAnti )
+
+            if (!isOpen)
+                return super.commitText(text, newCursorPosition);
+            if ( (Pattern.matches(regex, text.toString()) ^ isAnti) )
                 return super.commitText(text, newCursorPosition);
             return false;
         }
