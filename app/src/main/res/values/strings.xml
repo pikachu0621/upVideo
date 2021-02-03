@@ -57,5 +57,7 @@
     <string name="app_project_wc">已同步</string>
     <string name="app_project_sv">服务端</string>
     <string name="app_time">00:00</string>
+    <string name="app_project_start">起点</string>
+    <string name="app_project_end">终点</string>
 
 </resources>

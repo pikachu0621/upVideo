@@ -58,9 +58,9 @@ public class ToolCameraX {
     }
 
     public static ToolCameraX getCameraX(Activity activity, PreviewView previewView, OnVideoSavedCallback onVideoSavedCallback) {
-        if (cameraX == null)
-            cameraX = new ToolCameraX(activity, previewView, onVideoSavedCallback);
-        return cameraX;
+       /* if (cameraX == null)
+            cameraX = new ToolCameraX(activity, previewView, onVideoSavedCallback);*/
+        return /*cameraX */new ToolCameraX(activity, previewView, onVideoSavedCallback);
     }
 
     public ToolCameraX(Activity activity, PreviewView previewView, OnVideoSavedCallback onVideoSavedCallback) {

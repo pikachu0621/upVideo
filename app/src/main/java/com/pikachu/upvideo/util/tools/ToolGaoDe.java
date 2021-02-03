@@ -21,16 +21,17 @@ public class ToolGaoDe {
 
 
     public static ToolGaoDe getGaoDeTools(Activity activity) {
-        if (toolGaoDe == null)
+        /*if (toolGaoDe == null)
             toolGaoDe = new ToolGaoDe(activity, aMapLocation -> {
-            });
-        return toolGaoDe;
+            });*/
+        return /*toolGaoDe*/ toolGaoDe = new ToolGaoDe(activity, aMapLocation -> {
+        });
     }
 
     public static ToolGaoDe getGaoDeTools(Activity activity, AMapLocationListener var1) {
-        if (toolGaoDe == null)
-            toolGaoDe = new ToolGaoDe(activity, var1);
-        return toolGaoDe;
+        /*if (toolGaoDe == null)
+            toolGaoDe = new ToolGaoDe(activity, var1);*/
+        return /*toolGaoDe*/new ToolGaoDe(activity, var1);
     }
 
 

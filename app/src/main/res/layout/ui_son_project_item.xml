@@ -1,139 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="6dp"
-    app:cardCornerRadius="6dp"
-    app:cardMaxElevation="2dp"
-    app:cardElevation="2dp">
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-
-    <LinearLayout
-        android:id="@+id/ui_son_lin"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:ignore="RtlSymmetry">
+        android:layout_margin="6dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="2dp"
+        app:cardMaxElevation="2dp">
+
+
+
+
 
 
         <LinearLayout
+            android:id="@+id/ui_son_lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="14dp">
+            tools:ignore="RtlSymmetry">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1" >
-                    <TextView
-                        style="@style/text1"
-                        android:id="@+id/ui_son_text1"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:text="@string/app_todo"
-                        android:id="@+id/ui_son_text5"
-                        android:textColor="@color/black_2"
-                        android:textSize="11sp"
-                        android:layout_marginTop="2dp"
-                        tools:ignore="SmallSp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_son_add"
-                    android:id="@+id/ui_son_addProject"
-                    android:contentDescription="@string/app_son_add_video" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="14dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/permission_dp_10"
-                    android:layout_marginEnd="@dimen/permission_dp_10"
-                    android:background="@drawable/project_son_from"
-                    android:text="@string/app_todo"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    android:padding="6dp"
-                    android:id="@+id/ui_son_text2"
-                    android:ellipsize="end"
-                    android:lines="4"
-                    android:minLines="4"
-                    android:maxLines="4"
-                    android:gravity="center_vertical"
-                    tools:ignore="SmallSp" />
-
-                <ImageView
-                    android:layout_height="match_parent"
-                    android:layout_width="@dimen/permission_dp_40"
-                    android:gravity="center"
-                    android:src="@drawable/ic_son_get_to"
-                    android:contentDescription="@string/app_todo" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/permission_dp_10"
-                    android:layout_marginEnd="@dimen/permission_dp_10"
-                    android:background="@drawable/project_son_to"
-                    android:text="@string/app_todo"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    android:padding="6dp"
-                    android:id="@+id/ui_son_text3"
-                    android:lines="4"
-                    android:minLines="4"
-                    android:maxLines="4"
-                    android:gravity="center_vertical"/>
-            </LinearLayout>
 
             <TextView
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="@string/app_todo"
-                android:id="@+id/ui_son_text4"
-                android:textColor="@color/black_2"
-                android:textSize="12sp"
-                android:layout_marginTop="@dimen/permission_dp_10" />
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:background="@color/up3"
+                android:gravity="center"
+                android:text="@string/app_project_start"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/ui_son_start"/>
 
-            <!--android:gravity="end"
-            @dimen/permission_dp_20-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="14dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/ui_son_text1"
+                            style="@style/text1"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/ui_son_text5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/app_todo"
+                            android:textColor="@color/black_2"
+                            android:textSize="11sp"
+                            tools:ignore="SmallSp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ui_son_addProject"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="5dp"
+                        android:contentDescription="@string/app_son_add_video"
+                        android:src="@drawable/ic_son_add" />
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:id="@+id/ui_son_text4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/permission_dp_10"
+                    android:text="@string/app_todo"
+                    android:textColor="@color/black_2"
+                    android:textSize="12sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ui_son_text2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/permission_dp_10"
+                        android:layout_marginEnd="@dimen/permission_dp_10"
+                        android:layout_weight="1"
+                        android:background="@drawable/project_son_from"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lines="4"
+                        android:maxLines="4"
+                        android:minLines="4"
+                        android:padding="6dp"
+                        android:text="@string/app_todo"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/permission_dp_40"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/app_todo"
+                        android:gravity="center"
+                        android:src="@drawable/ic_son_get_to" />
+
+                    <TextView
+                        android:id="@+id/ui_son_text3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/permission_dp_10"
+                        android:layout_marginEnd="@dimen/permission_dp_10"
+                        android:layout_weight="1"
+                        android:background="@drawable/project_son_to"
+                        android:gravity="center_vertical"
+                        android:lines="4"
+                        android:maxLines="4"
+                        android:minLines="4"
+                        android:padding="6dp"
+                        android:text="@string/app_todo"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
+
+                <!--android:gravity="end"
+                @dimen/permission_dp_20-->
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ui_son_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginBottom="14dp" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:background="@color/up2"
+                android:gravity="center"
+                android:text="@string/app_project_end"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/ui_son_end"/>
+
         </LinearLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
+        <!--<View
+            android:background="@color/black_3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginBottom="14dp"
-            android:id="@+id/ui_son_recycler"/>
+            android:layout_height="2dp"/>-->
+    </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
 
-    <!--<View
-        android:background="@color/black_3"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"/>-->
-</androidx.cardview.widget.CardView>
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_son_project_bottom"
+        android:id="@+id/ui_son_end1"/>
+</LinearLayout>

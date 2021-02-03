@@ -1,6 +1,7 @@
 package com.pikachu.upvideo.activity.list;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pikachu.upvideo.R;
+import com.pikachu.upvideo.activity.camera.CameraActivity;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.util.AppInfo;
 import com.pikachu.upvideo.util.base.BaseActivity;
@@ -129,6 +131,16 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
     @Override
     public void onMinClick(View view, VideoUpJson.SonProject.ListHisVideo listHisVideo, int position) {
         //内部 小item 点击事件
+    }
+
+    @Override
+    public void onAddClick(View view, VideoUpJson.SonProject sonProject, int position) {
+        //点击添加视频
+        Intent intent = new Intent(this, CameraActivity.class);
+        intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJson);
+        intent.putExtra(AppInfo.START_ACTIVITY_KEY_2, AppInfo.START_CAMERA_TYPE_2);
+        startActivity(intent);
+
     }
 
     @Override

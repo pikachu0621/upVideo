@@ -7,6 +7,10 @@
     tools:context=".activity.camera.CameraActivity">
 
 
+
+
+
+
     <androidx.camera.view.PreviewView
         android:id="@+id/ca_pre"
         android:layout_width="match_parent"
@@ -18,13 +22,9 @@
         style="@style/bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_click_video"
         android:padding="@dimen/permission_dp_20"
-        android:layout_marginTop="60dp"/>
-
-
-
-
+        android:text="@string/app_click_video" />
+    <!--android:layout_below="@+id/top"-->
 
 
     <LinearLayout
@@ -91,6 +91,29 @@
 
 
     </LinearLayout>
+
+
+
+<!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        android:id="@+id/top">
+        <View
+            android:id="@+id/bar_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/bar_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </LinearLayout>
+-->
 
 
 
