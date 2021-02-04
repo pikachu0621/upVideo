@@ -55,7 +55,7 @@ public class ToolAddProjects {
     private Spinner addSpinner2;
     private Spinner addSpinner3;
     private AlertDialog.Builder builder;
-    private String name, msg;
+    private String name = "", msg = "";
     private int selectedItemPosition;
     private int selectedItemPosition1;
     private int selectedItemPosition2;
@@ -79,13 +79,14 @@ public class ToolAddProjects {
     /////////////////////////////////////////接口////////////////////////////////////////////////////
 
     public interface OnChangeCompleteListener {
-        void changeComplete(VideoUpJson videoUpJson);
+        void changeComplete(VideoUpJson videoUpJson, VideoUpJson.SonProject sonProject, String sonPath);
     }
 
     public interface OnMapListener {
         //返回true 直接停止本次
         boolean mapError(String msg);
-        void mapComplete(AMapLocation aMapLocation, String msg);
+
+        void mapComplete(AMapLocation aMapLocation, String errorMsg);
 
     }
 
@@ -155,7 +156,7 @@ public class ToolAddProjects {
             else {
 
                 //创建文件夹
-                if (!createFiles(videoPath + name)){
+                if (!createFiles(videoPath + name)) {
                     ToolOther.tw(activity, "创建失败");
                     return;
                 }
@@ -171,11 +172,11 @@ public class ToolAddProjects {
                     }
 
                     @Override
-                    public void mapComplete(AMapLocation aMapLocation, String msg) {
+                    public void mapComplete(AMapLocation aMapLocation, String errorMsg) {
 
                         //构成 class
                         VideoUpJson videoUpJson = new VideoUpJson(name, ToolOther.getTime(),
-                                msg, 0,
+                                errorMsg, 0,
                                 selectedItemPosition, integer,
                                 selectedItemPosition1, selectedItemPosition2,
                                 new ArrayList<>());
@@ -236,9 +237,14 @@ public class ToolAddProjects {
      * @param rea                      用于刷新列表
      * @param videoUpJson              videoUpJson 用于写入数据
      * @param onChangeCompleteListener 改变完成
+     * @param isShowEdit               是否显示编辑框
      */
     public void addSonProject(RecyclerAdapter rea, VideoUpJson videoUpJson,
-                              OnChangeCompleteListener onChangeCompleteListener) {
+                              OnChangeCompleteListener onChangeCompleteListener, boolean isShowEdit) {
+        if (!isShowEdit) {
+            addSonProject(videoUpJson, rea, onChangeCompleteListener, ToolOther.getTime(), "暂无备注");
+            return;
+        }
 
         inflate = LayoutInflater.from(activity).inflate(R.layout.ui_son_add_project, null);
         edit = inflate.findViewById(R.id.ui_son_name);
@@ -251,12 +257,13 @@ public class ToolAddProjects {
         builder.setView(inflate);
         builder.setPositiveButton(R.string.app_project_add, (dialog, which) -> {
 
-            //重置
-            gaoDeStop = false;
-            gaoDeP = 0;
-
             name = edit.getText().toString();
             msg = edit2.getText().toString();
+
+            if (name.equals(""))
+                name = ToolOther.getTime(); //没有输入名 则用时间代替
+            if (msg.equals(""))
+                msg = "暂无备注";
 
             for (VideoUpJson.SonProject sonProject : videoUpJson.getListSon()) {
                 if (sonProject.getSonProjectName().equals(name)) {
@@ -265,54 +272,67 @@ public class ToolAddProjects {
                 }
             }
 
-            if (name.equals(""))
-                name = ToolOther.getTime(); //没有输入名 则用时间代替
-            if (msg.equals(""))
-                msg = "暂无备注";
+            addSonProject(videoUpJson, rea, onChangeCompleteListener, name, msg);
 
-            progressDialog = ToolOther.showDialog(activity, "Loading...", "创建节点中...");
-
-            mapOnce(new OnMapListener() {
-                @Override
-                public boolean mapError(String msg) {
-                    ToolOther.tw(activity, "定位失败，请确保手机开启了GPS");
-                    progressDialog.dismiss();
-                    return true;
-                }
-
-                @Override
-                public void mapComplete(AMapLocation aMapLocation, String msg) {
-                    //创建文件夹
-                    if (!createFiles(videoPath + videoUpJson.getProjectName() + "/" + name)){
-                        ToolOther.tw(activity, "创建失败");
-                        progressDialog.dismiss();
-                        return;
-                    }
-
-                    VideoUpJson.SonProject sonProject = new VideoUpJson.SonProject();
-                    sonProject.setSonProjectName(name);
-                    sonProject.setSonProjectMsg(ToolAddProjects.this.msg);
-                    sonProject.setSonProjectStartMapInfo(VideoUpJson.aMapLocation2MapInfo(aMapLocation));
-                    sonProject.setSonProjectEndMapInfo(VideoUpJson.aMapLocation2MapInfo(aMapLocation));
-                    sonProject.setSonProjectVideo(new ArrayList<>());
-                    List<VideoUpJson.SonProject> listSon = videoUpJson.getListSon();
-                    listSon.add(listSon.size(), sonProject);
-                    videoUpJson.setListSon(listSon);
-                    if (readJson(videoUpJson)) {
-                        ToolOther.tw(activity, "创建成功");
-                        rea.reData(videoUpJson);
-                        onChangeCompleteListener.changeComplete(videoUpJson);
-                    } else {
-                        ToolOther.tw(activity, "创建失败");
-                    }
-                    progressDialog.dismiss();
-                }
-            });
 
         });
         builder.setNegativeButton(R.string.app_project_cancel, null);
         //builder.setCancelable(false);
         builder.show();
+    }
+
+
+    private void addSonProject(VideoUpJson videoUpJson, RecyclerAdapter rea,
+                               OnChangeCompleteListener onChangeCompleteListener,
+                               String name, String msg) {
+
+        progressDialog = ToolOther.showDialog(activity, "Loading...", "创建节点中...");
+
+        mapOnce(new OnMapListener() {
+            @Override
+            public boolean mapError(String msg) {
+                ToolOther.tw(activity, "定位失败，请确保手机开启了GPS");
+                progressDialog.dismiss();
+                return true;
+            }
+
+            @Override
+            public void mapComplete(AMapLocation aMapLocation, String errorMsg) {
+                //创建文件夹
+                String sonPath = videoPath + videoUpJson.getProjectName() + "/" ;
+
+                if (!createFiles(sonPath  + name)) {
+                    ToolOther.tw(activity, "创建失败");
+                    progressDialog.dismiss();
+                    return;
+                }
+
+                VideoUpJson.SonProject sonProject = new VideoUpJson.SonProject();
+                sonProject.setSonProjectName(name);
+                sonProject.setSonProjectMsg(msg);
+                sonProject.setSonProjectStartMapInfo(VideoUpJson.aMapLocation2MapInfo(aMapLocation));
+                sonProject.setSonProjectEndMapInfo(VideoUpJson.aMapLocation2MapInfo(aMapLocation));
+                sonProject.setSonProjectVideo(new ArrayList<>());
+                List<VideoUpJson.SonProject> listSon = videoUpJson.getListSon();
+                listSon.add(/*listSon.size()*/0, sonProject);
+                videoUpJson.setListSon(listSon);
+                if (readJson(videoUpJson)) {
+                    ToolOther.tw(activity, "创建成功");
+                    if (rea != null)
+                        rea.reData(videoUpJson);
+                    if (onChangeCompleteListener != null)
+                        onChangeCompleteListener.changeComplete(videoUpJson, sonProject, sonPath);
+                } else {
+                    ToolOther.tw(activity, "创建失败");
+                }
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+
+    public void addSonProject(VideoUpJson videoUpJson, OnChangeCompleteListener onChangeCompleteListener) {
+        addSonProject(null, videoUpJson, onChangeCompleteListener, false);
     }
 
 
@@ -439,7 +459,7 @@ public class ToolAddProjects {
 
 
     //删除文件夹
-    private void deleteFile(File file) {
+    public static void deleteFile(File file) {
         if (file == null || !file.exists()) return;
         File[] files = file.listFiles();
         for (File f : files)
@@ -450,7 +470,7 @@ public class ToolAddProjects {
 
 
     //创建文件夹
-    public boolean createFiles(String path){
+    public static boolean createFiles(String path) {
         //创建文件夹
         File file = new File(path);
         if (!file.exists())
@@ -460,7 +480,7 @@ public class ToolAddProjects {
 
 
     //写入项目json 数据
-    public boolean readJson(VideoUpJson videoUpJson, String path) {
+    public static boolean readJson(VideoUpJson videoUpJson, String path) {
         //Gson 转 String
         String r = new Gson().toJson(videoUpJson);
         try {
@@ -475,7 +495,7 @@ public class ToolAddProjects {
         return false;
     }
 
-    //写入项目json 数据
+    //写入/更新  项目json 数据
     public boolean readJson(VideoUpJson videoUpJson) {
         return readJson(videoUpJson, videoPath + videoUpJson.getProjectName() + "/" + AppInfo.videoProjectName);
     }
@@ -486,5 +506,7 @@ public class ToolAddProjects {
         String s = readFile(videoPath + projectName + "/" + AppInfo.videoProjectName);
         return new Gson().fromJson(s, VideoUpJson.class);
     }
+
+
 
 }

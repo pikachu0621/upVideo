@@ -2,6 +2,7 @@ package com.pikachu.upvideo.activity.camera;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,17 +18,21 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.pikachu.upvideo.R;
+import com.pikachu.upvideo.cls.CameraStartData;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.util.AppInfo;
 import com.pikachu.upvideo.util.base.BaseActivity;
 import com.pikachu.upvideo.util.state.PKStatusBarTools;
+import com.pikachu.upvideo.util.tools.ToolAddProjects;
 import com.pikachu.upvideo.util.tools.ToolCameraX;
 import com.pikachu.upvideo.util.tools.ToolGaoDe;
+import com.pikachu.upvideo.util.tools.ToolOther;
 import com.pikachu.upvideo.util.tools.ToolTimer;
 import com.pikachu.upvideo.util.view.CameraBtView;
 import com.pikachu.upvideo.util.view.QMUIRadiusImageView;
 
 import java.io.File;
+import java.util.List;
 
 public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunListener,
         AMapLocationListener, ToolCameraX.OnVideoSavedCallback {
@@ -44,8 +49,13 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
     private ToolGaoDe toolGaoDeTools;
     private TextView textGaoDe;
     private boolean dStop = false;
+    private boolean isClickMin ;
     private VideoUpJson videoUpJson;
-    private int type;
+    private CameraStartData cameraStartData;
+    private ToolAddProjects addProject;
+    private VideoUpJson.SonProject sonProject;
+    private String sonPath;
+    private VideoUpJson.SonProject.ListHisVideo listHisVideo;
 
 
     @Override
@@ -63,62 +73,100 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
 
         //根目项目数据
         videoUpJson = getSerializableExtra(AppInfo.START_ACTIVITY_KEY_1, VideoUpJson.class);
-        type = getIntExtra(AppInfo.START_ACTIVITY_KEY_2, 1);
+        cameraStartData = getSerializableExtra(AppInfo.START_ACTIVITY_KEY_2, CameraStartData.class);
+
+        videoUpJson = cameraStartData.getVideoUpJson();
+        sonProject = cameraStartData.getSonProject();
+        sonPath = cameraStartData.getSonPath();
+        listHisVideo = cameraStartData.getListHisVideo();
+
 
         //添加bar
         //setSupportActionBar(barToolbar);
         //setHead(true,videoUpJson.getProjectName() ,null, this::finish);
-
         //开始预览
-        cameraX = new ToolCameraX(this, caPre, this);
+        cameraX = new ToolCameraX(this, caPre, this, cameraStartData.getSonPath());
         //cameraX.setSeekBar(seekBar); //设置变焦bar
         //初始高德定位
-        toolGaoDeTools = ToolGaoDe.getGaoDeTools(this, this);
-        timer = ToolTimer.getTimer(this, this);
+        toolGaoDeTools = ToolGaoDe.getGaoDeTools(this, this); //可删除
 
+
+        //初始计时器
+        timer = ToolTimer.getTimer(this, this);
+        //初始添加项目
+        addProject = ToolAddProjects.getAddProject(this);
+        //手动分段显示按钮
+        caCameraBt2.setVisibility( videoUpJson.getProjectMode() == 1 ? View.VISIBLE : View.GONE );
 
         caCameraBt1.setOnClickListener((view, isSed) -> {
-            if (isSed) {
-                // 开始录像
-                timer.run(); // 开始计时
-                toolGaoDeTools.start(); // 开始定位
-                cameraX.startVideo(); // 开始录像
-                caLi1.setVisibility(View.VISIBLE);
-                showToast("开始录像");
-
-            } else {
-                //结束录像
-                timer.afresh();
-                // 结束计时
-                toolGaoDeTools.stop(); // 结束定位
-                cameraX.stopVideo(); // 结束录像/并保存
-                caLi1.setVisibility(View.GONE);
-                showToast("结束录像");
-            }
+            if (isSed)
+                startVideo();
+            else
+                stopVideo();
+            isClickMin = false;
             dStop = false; // 用于弹框退出
             return true;
         });
 
         caCameraBt2.setOnClickListener((view, isSed) -> {
-            if (caCameraBt1.isSed()) {
-                timer.afresh();
-                timer.run();
-                showToast("在录像");
-            } else
-                showToast("没录像");
-            //showToast("分段");
-
+            minVideo();
             return true;
         });
 
     }
 
-    @Override
-    public PKStatusBarTools pkStatusBarTools() {
-        PKStatusBarTools pkStatusBarTools = PKStatusBarTools.with(this).hideSTS().hideNON();
-        pkStatusBarTools.init();
-        return pkStatusBarTools;
+
+    ////////////////////////////////// 录像相关 ////////////////////////////////////////////////////
+    private String getVideoName() {
+        String time = ToolOther.getTime();
+        if (cameraStartData.getStartType() == 2)
+            return listHisVideo.getVideoName();
+        return time;
     }
+
+    // 开始录像
+    private void startVideo(){
+
+        timer.run(); // 开始计时
+        toolGaoDeTools.start(); // 开始定位
+        cameraX.startVideo(sonProject.getSonProjectName(), getVideoName() + ".mp4"); // 开始录像
+        caLi1.setVisibility(View.VISIBLE);
+        showToast("开始录像");
+    }
+
+    //结束录像
+    private void stopVideo(){
+
+        timer.afresh();// 结束计时
+        toolGaoDeTools.stop(); // 结束定位
+        cameraX.stopVideo(); // 结束录像/并保存
+        caLi1.setVisibility(View.GONE);
+        showToast("结束录像");
+    }
+
+
+
+    //分段
+    private void minVideo(){
+
+        if (caCameraBt1.isSed()) {
+            isClickMin = true;
+            //结束录制
+            stopVideo();
+
+
+            timer.afresh();
+            timer.run();
+            showToast("分段中");
+
+        } else
+            showToast("还没有开始录像");
+        //showToast("分段");
+
+
+    }
+
+
 
 
     private void initView() {
@@ -131,6 +179,18 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
         caCameraBt2 = findViewById(R.id.ca_cameraBt2);
         textGaoDe = findViewById(R.id.gaodeInfo);
 
+    }
+
+
+
+
+
+
+    @Override
+    public PKStatusBarTools pkStatusBarTools() {
+        PKStatusBarTools pkStatusBarTools = PKStatusBarTools.with(this).hideSTS().hideNON();
+        pkStatusBarTools.init();
+        return pkStatusBarTools;
     }
 
 
@@ -176,20 +236,42 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
 
                             dStop = true;
                         }).show();
-            } else {
+            } else
                 finish();
-            }
             return true;
         }
         return super.onKeyUp(keyCode, event);
     }
 
+    //更新数据
+    private void upData(){
+        List<VideoUpJson.SonProject> listSon = videoUpJson.getListSon();
+        //int i = listSon.indexOf(sonProject);
+        //
+
+
+
+
+
+
+    }
+
     //视频保存成功
     @Override
     public void onVideoSaved(@NonNull File file, String filePath) {
-        showToast("已保存到： " + filePath);
+        //showToast("已保存到： " + filePath);
+        //更新数据
+        upData();
 
-        if (dStop) finish();
+        if (isClickMin){
+            addProject.addSonProject(this.videoUpJson, (videoUpJson, sonProject, sonPath) -> {
+
+            });
+        }
+
+
+
+        if (dStop || !isClickMin) finish();
     }
 
 

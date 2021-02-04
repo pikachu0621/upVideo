@@ -29,7 +29,7 @@ public class VideoUpJson implements Serializable {
     //项目状态 - > 0 本地项目（未上传的，位同步的，包括修改服务器项目但未上传的）， 1 已同步的项目（已上传的，本地也有的） ，2 服务器项目（本地没有，纯服务器）
     private int projectType;
 
-    //分段模式 -> 0不分段 1 手动 ，2 距离（经纬度），3 时间（分钟）
+    //分段模式 -> 0不分段 , 1 手动  ，2 距离（经纬度），3 时间（分钟）
     private int projectMode;
     //分段模式   记录（时间，距离）
     private long projectModeInfo;

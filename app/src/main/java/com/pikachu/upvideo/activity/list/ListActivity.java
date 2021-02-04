@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +17,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.activity.camera.CameraActivity;
+import com.pikachu.upvideo.cls.CameraStartData;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.util.AppInfo;
 import com.pikachu.upvideo.util.base.BaseActivity;
 import com.pikachu.upvideo.util.tools.ToolAddProjects;
+import com.pikachu.upvideo.util.tools.ToolOther;
 
 public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClickListener {
 
@@ -40,7 +44,7 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
     private void init() {
         videoUpJson = getSerializableExtra(AppInfo.START_ACTIVITY_KEY_1, VideoUpJson.class);
         setSupportActionBar(barToolbar);
-        setHead(true,videoUpJson.getProjectName(),null,null);
+        setHead(true, videoUpJson.getProjectName(), null, null);
         //添加项目
         toolAddProjects = new ToolAddProjects(this);
 
@@ -48,11 +52,8 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
     }
 
 
-
-
-
     private void list() {
-        sw.setOnRefreshListener(() -> sw.postDelayed(() -> sw.setRefreshing(false),1000));
+        sw.setOnRefreshListener(() -> sw.postDelayed(() -> sw.setRefreshing(false), 1000));
 
         recyclerAdapter = new RecyclerAdapter(this, videoUpJson, this);
         list.setAdapter(recyclerAdapter);
@@ -60,18 +61,11 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
     }
 
 
-
-
-
-
     private void initView() {
         list = findViewById(R.id.list_recycler);
         sw = findViewById(R.id.list_sw);
         barToolbar = findViewById(R.id.bar_toolbar);
     }
-
-
-
 
 
     //toolbar菜单
@@ -94,7 +88,10 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
 
                 //  添加子项目
                 toolAddProjects.addSonProject(recyclerAdapter, videoUpJson,
-                        videoUpJson -> ListActivity.this.videoUpJson = videoUpJson);
+                        (videoUpJson, sonProject, sonPath) -> {
+                            ListActivity.this.videoUpJson = videoUpJson;
+                            startActivityCamera(1,sonPath,videoUpJson,sonProject,null);
+                        }, true);
 
                 //进入拍摄
                 /*Intent intent = new Intent(this, CameraActivity.class);
@@ -118,40 +115,51 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
 
 
 
+    private void startActivityCamera(@IntRange(from = 1,to = 2) int startType,
+                                     @NonNull String sonPath,
+                                     @NonNull VideoUpJson videoUpJson,
+                                     @NonNull VideoUpJson.SonProject sonProject,
+                                     VideoUpJson.SonProject.ListHisVideo listHisVideo){
+        Intent intent = new Intent(this, CameraActivity.class);
+        intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJson);
+        intent.putExtra(AppInfo.START_ACTIVITY_KEY_2,
+                new CameraStartData(startType, sonPath, videoUpJson, sonProject, listHisVideo));
+        startActivity(intent);
 
-
+    }
 
     ///////////////////////////////////点击事件///////////////////////////////////////////////////
     @Override
     public void onMaxClick(View view, VideoUpJson.SonProject sonProject, int position) {
-        //外部 大item 点击事件 删除本地节点
+        //外部 大item 点击事件
 
     }
 
     @Override
-    public void onMinClick(View view, VideoUpJson.SonProject.ListHisVideo listHisVideo, int position) {
+    public void onMinClick(View view, VideoUpJson.SonProject sonProject, VideoUpJson.SonProject.ListHisVideo listHisVideo, int position) {
         //内部 小item 点击事件
+        //点击添加视频
+        String sonPath = ToolOther.getVideoPath(this) + videoUpJson.getProjectName() + "/" + sonProject.getSonProjectName();
+        startActivityCamera(2,sonPath,videoUpJson,sonProject,listHisVideo);
     }
 
     @Override
     public void onAddClick(View view, VideoUpJson.SonProject sonProject, int position) {
         //点击添加视频
-        Intent intent = new Intent(this, CameraActivity.class);
-        intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJson);
-        intent.putExtra(AppInfo.START_ACTIVITY_KEY_2, AppInfo.START_CAMERA_TYPE_2);
-        startActivity(intent);
-
+        String sonPath = ToolOther.getVideoPath(this) + videoUpJson.getProjectName() + "/" + sonProject.getSonProjectName();
+        startActivityCamera(1,sonPath,videoUpJson,sonProject,null);
     }
 
     @Override
     public boolean onMaxLongClick(View view, VideoUpJson.SonProject sonProject, int position) {
         //外部 大item 长按事件
-        toolAddProjects.deleteSonProject(recyclerAdapter,videoUpJson,sonProject);
+        //删除本地节点
+        toolAddProjects.deleteSonProject(recyclerAdapter, videoUpJson, sonProject);
         return true;
     }
 
     @Override
-    public boolean onMinLongClick(View view, VideoUpJson.SonProject.ListHisVideo listHisVideo, int position) {
+    public boolean onMinLongClick(View view, VideoUpJson.SonProject sonProject, VideoUpJson.SonProject.ListHisVideo listHisVideo, int position) {
         //内部 小item 长按事件
         return false;
     }

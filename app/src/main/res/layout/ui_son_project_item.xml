@@ -33,9 +33,9 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:background="@color/up3"
+                android:background="@color/up2"
                 android:gravity="center"
-                android:text="@string/app_project_start"
+                android:text="@string/app_project_end"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -169,9 +169,9 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:background="@color/up2"
+                android:background="@color/up3"
                 android:gravity="center"
-                android:text="@string/app_project_end"
+                android:text="@string/app_project_start"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -187,8 +187,9 @@
 
 
     <ImageView
+        android:id="@+id/ui_son_end1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_son_project_bottom"
-        android:id="@+id/ui_son_end1"/>
+        android:rotation="180"
+        android:src="@drawable/ic_son_project_bottom" />
 </LinearLayout>

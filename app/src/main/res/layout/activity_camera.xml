@@ -52,45 +52,47 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/permission_dp_40">
 
 
-
         <com.pikachu.upvideo.util.view.QMUIRadiusImageView
+            android:id="@+id/ca_qmui1"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="@dimen/permission_dp_40"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="46dp"
+            android:layout_toStartOf="@+id/ca_cameraBt1"
             android:src="@drawable/ic_author"
-            app:qmui_is_circle="true"
-            android:id="@+id/ca_qmui1"/>
+            app:qmui_is_circle="true" />
 
         <com.pikachu.upvideo.util.view.CameraBtView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:id="@+id/ca_cameraBt1"/>
+            android:id="@+id/ca_cameraBt1"
+            android:layout_centerInParent="true"/>
 
 
         <com.pikachu.upvideo.util.view.CameraBtView
+            android:id="@+id/ca_cameraBt2"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="@dimen/permission_dp_40"
-            app:pkMaxNoColor="#60FFFFFF"
-            app:pkMinNoColor="#FFF"
-            app:pkMaxWasColor="#6000FFC4"
-            app:pkMinWasColor="#00FFC4"
-            app:pkMaxToMin="0.6"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="46dp"
+            android:layout_toEndOf="@+id/ca_cameraBt1"
             app:pkIsChangeColor="true"
-            android:id="@+id/ca_cameraBt2" />
+            app:pkMaxNoColor="#60FFFFFF"
+            app:pkMaxToMin="0.6"
+            app:pkMaxWasColor="#6000FFC4"
+            app:pkMinNoColor="#FFF"
+            app:pkMinWasColor="#00FFC4" />
 
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 

@@ -19,6 +19,7 @@ import java.util.List;
 public class RecyclerAdapterItem extends RecyclerView.Adapter<RecyclerAdapterItem.ViewHolder> {
 
 
+    private VideoUpJson.SonProject sonProject;
     private RecyclerAdapter.OnClickListener onClickListener;
     private List<VideoUpJson.SonProject.ListHisVideo> sonProjectVideo;
 
@@ -26,7 +27,8 @@ public class RecyclerAdapterItem extends RecyclerView.Adapter<RecyclerAdapterIte
     public RecyclerAdapterItem(VideoUpJson.SonProject sonProject,
                                RecyclerAdapter.OnClickListener onClickListener) {
 
-        if (sonProject != null) sonProjectVideo = sonProject.getSonProjectVideo();
+        this.sonProject = sonProject;
+        if (this.sonProject != null) sonProjectVideo = sonProject.getSonProjectVideo();
         else sonProjectVideo = new ArrayList<>();
 
         this.onClickListener = onClickListener;
@@ -34,7 +36,8 @@ public class RecyclerAdapterItem extends RecyclerView.Adapter<RecyclerAdapterIte
 
     //更新数据
     public void reData(VideoUpJson.SonProject sonProject) {
-        if (sonProject != null) sonProjectVideo = sonProject.getSonProjectVideo();
+        this.sonProject = sonProject;
+        if (this.sonProject != null) sonProjectVideo = sonProject.getSonProjectVideo();
         else sonProjectVideo = new ArrayList<>();
         notifyDataSetChanged();
     }
@@ -61,9 +64,9 @@ public class RecyclerAdapterItem extends RecyclerView.Adapter<RecyclerAdapterIte
         //事件
         if (onClickListener != null ){
             holder.uiSonVideoLin.setOnClickListener(v ->
-                    onClickListener.onMinClick(v, listHisVideo, position));
+                    onClickListener.onMinClick(v, sonProject, listHisVideo, position));
             holder.uiSonVideoLin.setOnLongClickListener(v ->
-                    onClickListener.onMinLongClick(v, listHisVideo, position));
+                    onClickListener.onMinLongClick(v,sonProject, listHisVideo, position));
         }
 
     }

@@ -27,8 +27,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UpVideo">
-        <activity android:name=".activity.camera.CameraActivity"></activity>
-        <activity android:name=".activity.camera.MainActivity" />
+        <activity android:name=".activity.camera.CameraActivity"/>
         <activity android:name=".activity.list.ListActivity" />
         <activity android:name=".activity.index.IndexActivity">
             <intent-filter>

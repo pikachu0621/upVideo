@@ -1,12 +1,10 @@
 package com.pikachu.upvideo.activity.list;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,11 +19,7 @@ import com.pikachu.upvideo.cls.VideoUpJson.SonProject.ListHisVideo;
 import com.pikachu.upvideo.cls.VideoUpJson.SonProject;
 import com.pikachu.upvideo.util.tools.ToolOther;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -39,10 +33,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public interface OnClickListener {
         void onMaxClick(View view, SonProject sonProject, int position);
-        void onMinClick(View view, ListHisVideo listHisVideo, int position);
+        void onMinClick(View view, SonProject sonProject, ListHisVideo listHisVideo, int position);
+
         void onAddClick(View view,  SonProject sonProject,  int position);
+
         boolean onMaxLongClick(View view, SonProject sonProject, int position);
-        boolean onMinLongClick(View view, ListHisVideo listHisVideo, int position);
+        boolean onMinLongClick(View view, SonProject sonProject, ListHisVideo listHisVideo, int position);
     }
 
     public RecyclerAdapter(Activity activity,
@@ -82,6 +78,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
@@ -108,7 +105,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         SonProject sonProject = listSon.get(position);
         //name
-        holder.uiSonText1.setText(sonProject.getSonProjectName());
+        holder.uiSonText1.setText( (listSon.size() - position)+". "+ sonProject.getSonProjectName());
         //time
         holder.uiSonText5.setText(ToolOther.getTime(
                 sonProject.getSonProjectStartMapInfo().getTime()

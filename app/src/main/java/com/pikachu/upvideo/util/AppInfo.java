@@ -18,9 +18,9 @@ public class AppInfo {
     //定位失败重试次数
     public static int gaoDeInt   = 3;
     // 项目保存路径 /data/user/0/packname/files + videoPath
-    public static String videoPath = "/video/";
+    public static String videoPath = "/.nomedia/";
     //项目保存格式
-    public static String videoProjectName  = "index.json";
+    public static String videoProjectName  = ".idea.json";
 
 
 
@@ -46,13 +46,7 @@ public class AppInfo {
     };
 
     public static final String START_ACTIVITY_KEY_1  = "KEY_1";
-
     public static final String START_ACTIVITY_KEY_2  = "KEY_2";
-    public static final int START_CAMERA_TYPE_1  = 1 , // 添加节点跳转拍摄
-            START_CAMERA_TYPE_2  = 2 , //添加历史跳转拍摄
-            START_CAMERA_TYPE_3  = 3; //修改历史跳转拍摄
-
-
 
 
     ////////////////////完成子项目 1.添加  2.删除  3.历史
