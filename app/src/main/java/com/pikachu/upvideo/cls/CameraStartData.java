@@ -16,17 +16,20 @@ public class CameraStartData implements Serializable {
     public static final int START_CAMERA_TYPE_1  = 1 , START_CAMERA_TYPE_2  = 2 ;
 
     private int startType; // 1(添加) ,2（重拍）
+    private boolean isIndex; // 是否为第一页跳转
     private String sonPath;
     private VideoUpJson videoUpJson;
     private VideoUpJson.SonProject sonProject;
     private VideoUpJson.SonProject.ListHisVideo listHisVideo;
 
     public CameraStartData(@IntRange(from = 1,to = 2) int startType,
+                           @NonNull boolean isIndex,
                            @NonNull String sonPath,
                            @NonNull VideoUpJson videoUpJson,
                            @NonNull VideoUpJson.SonProject sonProject,
                            VideoUpJson.SonProject.ListHisVideo listHisVideo) {
         this.startType = startType;
+        this.isIndex = isIndex;
         this.sonPath = sonPath;
         this.videoUpJson = videoUpJson;
         this.sonProject = sonProject;
@@ -43,6 +46,14 @@ public class CameraStartData implements Serializable {
 
     public void setStartType(@IntRange(from = 1,to = 2) int startType) {
         this.startType = startType;
+    }
+
+    public boolean isIndex() {
+        return isIndex;
+    }
+
+    public void setIndex(boolean index) {
+        isIndex = index;
     }
 
     public String getSonPath() {

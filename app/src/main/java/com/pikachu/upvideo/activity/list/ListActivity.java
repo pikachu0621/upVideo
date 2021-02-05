@@ -24,7 +24,7 @@ import com.pikachu.upvideo.util.base.BaseActivity;
 import com.pikachu.upvideo.util.tools.ToolAddProjects;
 import com.pikachu.upvideo.util.tools.ToolOther;
 
-public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClickListener {
+public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView list;
     private SwipeRefreshLayout sw;
@@ -53,7 +53,7 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
 
 
     private void list() {
-        sw.setOnRefreshListener(() -> sw.postDelayed(() -> sw.setRefreshing(false), 1000));
+        sw.setOnRefreshListener(this);
 
         recyclerAdapter = new RecyclerAdapter(this, videoUpJson, this);
         list.setAdapter(recyclerAdapter);
@@ -123,7 +123,7 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
         Intent intent = new Intent(this, CameraActivity.class);
         intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJson);
         intent.putExtra(AppInfo.START_ACTIVITY_KEY_2,
-                new CameraStartData(startType, sonPath, videoUpJson, sonProject, listHisVideo));
+                new CameraStartData(startType,false, sonPath, videoUpJson, sonProject, listHisVideo));
         startActivity(intent);
 
     }
@@ -139,14 +139,14 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
     public void onMinClick(View view, VideoUpJson.SonProject sonProject, VideoUpJson.SonProject.ListHisVideo listHisVideo, int position) {
         //内部 小item 点击事件
         //点击添加视频
-        String sonPath = ToolOther.getVideoPath(this) + videoUpJson.getProjectName() + "/" + sonProject.getSonProjectName();
+        String sonPath = ToolOther.getVideoPath(this) + videoUpJson.getProjectName() + "/" /* + sonProject.getSonProjectName()*/;
         startActivityCamera(2,sonPath,videoUpJson,sonProject,listHisVideo);
     }
 
     @Override
     public void onAddClick(View view, VideoUpJson.SonProject sonProject, int position) {
         //点击添加视频
-        String sonPath = ToolOther.getVideoPath(this) + videoUpJson.getProjectName() + "/" + sonProject.getSonProjectName();
+        String sonPath = ToolOther.getVideoPath(this) + videoUpJson.getProjectName() + "/" /* + sonProject.getSonProjectName()*/;
         startActivityCamera(1,sonPath,videoUpJson,sonProject,null);
     }
 
@@ -162,5 +162,23 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
     public boolean onMinLongClick(View view, VideoUpJson.SonProject sonProject, VideoUpJson.SonProject.ListHisVideo listHisVideo, int position) {
         //内部 小item 长按事件
         return false;
+    }
+
+
+    private void reData(){
+        this.videoUpJson = toolAddProjects.readToVideoUpJson(this.videoUpJson.getProjectName());
+        recyclerAdapter.reData(videoUpJson);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        reData();
+    }
+
+    @Override
+    public void onRefresh() {
+        reData();
+        sw.setRefreshing(false);
     }
 }

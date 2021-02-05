@@ -2,8 +2,10 @@ package com.pikachu.upvideo.activity.camera;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,6 +20,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.pikachu.upvideo.R;
+import com.pikachu.upvideo.activity.list.ListActivity;
 import com.pikachu.upvideo.cls.CameraStartData;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.util.AppInfo;
@@ -49,13 +52,15 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
     private ToolGaoDe toolGaoDeTools;
     private TextView textGaoDe;
     private boolean dStop = false;
-    private boolean isClickMin ;
+    private boolean isClickMin;
     private VideoUpJson videoUpJson;
     private CameraStartData cameraStartData;
     private ToolAddProjects addProject;
     private VideoUpJson.SonProject sonProject;
     private String sonPath;
     private VideoUpJson.SonProject.ListHisVideo listHisVideo;
+    private AMapLocation aMapLocation;
+    private String videoNameTime;
 
 
     @Override
@@ -67,8 +72,6 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
     }
 
     private void init() {
-
-
 
 
         //根目项目数据
@@ -96,12 +99,14 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
         //初始添加项目
         addProject = ToolAddProjects.getAddProject(this);
         //手动分段显示按钮
-        caCameraBt2.setVisibility( videoUpJson.getProjectMode() == 1 ? View.VISIBLE : View.GONE );
+        caCameraBt2.setVisibility(videoUpJson.getProjectMode() == 1 && cameraStartData.getStartType() != 2 ? View.VISIBLE : View.GONE);
 
         caCameraBt1.setOnClickListener((view, isSed) -> {
-            if (isSed)
-                startVideo();
-            else
+            if (isSed) {
+                videoNameTime = getVideoName();
+
+                startVideo(sonProject.getSonProjectName(), videoNameTime);
+            } else
                 stopVideo();
             isClickMin = false;
             dStop = false; // 用于弹框退出
@@ -118,24 +123,24 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
 
     ////////////////////////////////// 录像相关 ////////////////////////////////////////////////////
     private String getVideoName() {
-        String time = ToolOther.getTime();
         if (cameraStartData.getStartType() == 2)
             return listHisVideo.getVideoName();
-        return time;
+        return ToolOther.getTime();
     }
 
     // 开始录像
-    private void startVideo(){
+    private void startVideo(String nodeName, String videoName) {
 
         timer.run(); // 开始计时
         toolGaoDeTools.start(); // 开始定位
-        cameraX.startVideo(sonProject.getSonProjectName(), getVideoName() + ".mp4"); // 开始录像
+        cameraX.startVideo(/*sonProject.getSonProjectName()*/nodeName,
+                /*getVideoName()*/videoName + ".mp4"); // 开始录像
         caLi1.setVisibility(View.VISIBLE);
         showToast("开始录像");
     }
 
     //结束录像
-    private void stopVideo(){
+    private void stopVideo() {
 
         timer.afresh();// 结束计时
         toolGaoDeTools.stop(); // 结束定位
@@ -145,18 +150,14 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
     }
 
 
-
     //分段
-    private void minVideo(){
+    private void minVideo() {
 
         if (caCameraBt1.isSed()) {
             isClickMin = true;
             //结束录制
             stopVideo();
-
-
             timer.afresh();
-            timer.run();
             showToast("分段中");
 
         } else
@@ -165,8 +166,6 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
 
 
     }
-
-
 
 
     private void initView() {
@@ -180,10 +179,6 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
         textGaoDe = findViewById(R.id.gaodeInfo);
 
     }
-
-
-
-
 
 
     @Override
@@ -208,12 +203,12 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
     @SuppressLint("SimpleDateFormat")
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        this.aMapLocation = aMapLocation;
         StringBuilder stringBuffer = new StringBuilder();
         if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
             stringBuffer.append(VideoUpJson.aMapLocation2MapInfo(aMapLocation).toString());
-        } else {
+        } else
             stringBuffer.append("定位失败,请打开GPS定位");
-        }
         textGaoDe.setText(stringBuffer.toString());
     }
 
@@ -244,34 +239,89 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
     }
 
     //更新数据
-    private void upData(){
-        List<VideoUpJson.SonProject> listSon = videoUpJson.getListSon();
-        //int i = listSon.indexOf(sonProject);
-        //
+    private boolean upData() {
+
+        if (aMapLocation == null)
+            return false;
+
+        List<VideoUpJson.SonProject> listSon = this.videoUpJson.getListSon();
+        int i = listSon.indexOf(this.sonProject);
+        VideoUpJson.SonProject sonProject = listSon.get(i);
+        List<VideoUpJson.SonProject.ListHisVideo> sonProjectVideo = sonProject.getSonProjectVideo();
+
+        VideoUpJson.SonProject.MapInfo mapInfo = null;
+        if (aMapLocation != null)
+            mapInfo = VideoUpJson.aMapLocation2MapInfo(aMapLocation);
+
+        VideoUpJson.SonProject.ListHisVideo listHisVideo = new VideoUpJson.SonProject.ListHisVideo();
+        if (mapInfo != null)
+            listHisVideo.setVideoMapInfo(mapInfo);
+        //Log.i("test_t",videoNameTime +"   mmp");
+        listHisVideo.setVideoName(videoNameTime);
+        listHisVideo.setVideoTime(ToolOther.getTime());
+        listHisVideo.setVideoType(0);
+        listHisVideo.setVideoPx(0);
+        listHisVideo.setVideoWh(0);
+
+        if (cameraStartData.getStartType() == 1) {
+            //add video
+            sonProjectVideo.add(0, listHisVideo);
+        } else {
+            //re Video
+            addProject.deleteFile(videoUpJson.getProjectName(),
+                    sonProject.getSonProjectName(),
+                    cameraStartData.getListHisVideo().getVideoName());
+            listHisVideo.setVideoTime(cameraStartData.getListHisVideo().getVideoTime());
+            int indexOf = sonProjectVideo.indexOf(cameraStartData.getListHisVideo());
+            sonProjectVideo.set(indexOf, listHisVideo);
+        }
 
 
+        sonProject.setSonProjectVideo(sonProjectVideo);
+        if (mapInfo != null)
+            sonProject.setSonProjectEndMapInfo(mapInfo);
 
+        listSon.set(i, sonProject);
 
-
-
+        return addProject.writeJson(this.videoUpJson);
     }
+
 
     //视频保存成功
     @Override
     public void onVideoSaved(@NonNull File file, String filePath) {
         //showToast("已保存到： " + filePath);
         //更新数据
-        upData();
-
-        if (isClickMin){
-            addProject.addSonProject(this.videoUpJson, (videoUpJson, sonProject, sonPath) -> {
-
-            });
+        if (!upData()) {
+            showToast("数据更新失败");
+            return;
         }
 
+        if (isClickMin) {
 
+            addProject.addSonProject(this.videoUpJson, aMapLocation, ToolOther.getTime(), (videoUpJson, sonProject, sonPath) -> {
+                this.videoUpJson = videoUpJson;
+                this.sonProject = sonProject;
+                this.sonPath = sonPath;
+                //开始录像
+                startVideo(sonProject.getSonProjectName(),videoNameTime = getVideoName());
 
-        if (dStop || !isClickMin) finish();
+            });
+
+        }
+
+        if (!isClickMin) {
+            showToast("添加完成");
+            finish();
+            if (cameraStartData.isIndex()) {
+                Intent intent = new Intent();
+                intent.setClass(this, ListActivity.class);
+                intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJson);
+                startActivity(intent);
+            }
+        }
+
+        if (dStop) finish();
     }
 
 

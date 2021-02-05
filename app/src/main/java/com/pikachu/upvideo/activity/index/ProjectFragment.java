@@ -125,7 +125,7 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 intent.setClass(activity,CameraActivity.class);
                 intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJson1);
                 intent.putExtra(AppInfo.START_ACTIVITY_KEY_2,
-                        new CameraStartData(1, sonPath, videoUpJson1, sonProject, null));
+                        new CameraStartData(1,true, sonPath, videoUpJson1, sonProject, null));
                 startActivity(intent);
             });
         }else {

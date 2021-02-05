@@ -181,7 +181,7 @@ public class ToolAddProjects {
                                 selectedItemPosition1, selectedItemPosition2,
                                 new ArrayList<>());
 
-                        if (readJson(videoUpJson, videoPath + name + "/" + AppInfo.videoProjectName)) {
+                        if (writeJson(videoUpJson, videoPath + name + "/" + AppInfo.videoProjectName)) {
                             //显示按钮
                             ToolOther.tw(activity, "创建成功");
                             floatingActionButton.setVisibility(View.VISIBLE);
@@ -208,7 +208,7 @@ public class ToolAddProjects {
 
     //删除一个主项目
     public void deleteProject(String projectName) {
-        deleteFile(new File(videoPath + projectName));
+        deleteFiles(new File(videoPath + projectName));
     }
 
 
@@ -281,10 +281,19 @@ public class ToolAddProjects {
         builder.show();
     }
 
-
+    /**
+     * 公用模块
+     *
+     * @param videoUpJson
+     * @param rea
+     * @param onChangeCompleteListener
+     * @param name
+     * @param msg
+     */
     private void addSonProject(VideoUpJson videoUpJson, RecyclerAdapter rea,
                                OnChangeCompleteListener onChangeCompleteListener,
                                String name, String msg) {
+
 
         progressDialog = ToolOther.showDialog(activity, "Loading...", "创建节点中...");
 
@@ -298,41 +307,85 @@ public class ToolAddProjects {
 
             @Override
             public void mapComplete(AMapLocation aMapLocation, String errorMsg) {
-                //创建文件夹
-                String sonPath = videoPath + videoUpJson.getProjectName() + "/" ;
-
-                if (!createFiles(sonPath  + name)) {
-                    ToolOther.tw(activity, "创建失败");
-                    progressDialog.dismiss();
-                    return;
-                }
-
-                VideoUpJson.SonProject sonProject = new VideoUpJson.SonProject();
-                sonProject.setSonProjectName(name);
-                sonProject.setSonProjectMsg(msg);
-                sonProject.setSonProjectStartMapInfo(VideoUpJson.aMapLocation2MapInfo(aMapLocation));
-                sonProject.setSonProjectEndMapInfo(VideoUpJson.aMapLocation2MapInfo(aMapLocation));
-                sonProject.setSonProjectVideo(new ArrayList<>());
-                List<VideoUpJson.SonProject> listSon = videoUpJson.getListSon();
-                listSon.add(/*listSon.size()*/0, sonProject);
-                videoUpJson.setListSon(listSon);
-                if (readJson(videoUpJson)) {
-                    ToolOther.tw(activity, "创建成功");
-                    if (rea != null)
-                        rea.reData(videoUpJson);
-                    if (onChangeCompleteListener != null)
-                        onChangeCompleteListener.changeComplete(videoUpJson, sonProject, sonPath);
-                } else {
-                    ToolOther.tw(activity, "创建失败");
-                }
-                progressDialog.dismiss();
+                addSonProject(videoUpJson, rea, onChangeCompleteListener, aMapLocation, name, msg);
             }
         });
     }
 
 
+    /**
+     * 直接添加
+     *
+     * @param videoUpJson
+     * @param onChangeCompleteListener
+     */
     public void addSonProject(VideoUpJson videoUpJson, OnChangeCompleteListener onChangeCompleteListener) {
         addSonProject(null, videoUpJson, onChangeCompleteListener, false);
+    }
+
+    /**
+     * 有地址数据
+     *
+     * @param videoUpJson
+     * @param rea                      可空
+     * @param onChangeCompleteListener 监听
+     * @param aMapLocation             定位数据
+     * @param name                     标题
+     * @param msg                      备注
+     */
+    private void addSonProject(VideoUpJson videoUpJson,
+                              RecyclerAdapter rea,
+                              OnChangeCompleteListener onChangeCompleteListener,
+                              AMapLocation aMapLocation,
+                              String name,
+                              String msg) {
+
+        //创建文件夹
+        String sonPath = videoPath + videoUpJson.getProjectName() + "/";
+
+        if (!createFiles(sonPath + name)) {
+            ToolOther.tw(activity, "创建失败");
+            if (progressDialog != null)
+                progressDialog.dismiss();
+            return;
+        }
+
+        VideoUpJson.SonProject sonProject = new VideoUpJson.SonProject();
+        sonProject.setSonProjectName(name);
+        sonProject.setSonProjectMsg(msg);
+        sonProject.setSonProjectStartMapInfo(VideoUpJson.aMapLocation2MapInfo(aMapLocation));
+        sonProject.setSonProjectEndMapInfo(VideoUpJson.aMapLocation2MapInfo(aMapLocation));
+        sonProject.setSonProjectVideo(new ArrayList<>());
+        List<VideoUpJson.SonProject> listSon = videoUpJson.getListSon();
+        listSon.add(/*listSon.size()*/0, sonProject);
+        videoUpJson.setListSon(listSon);
+        if (writeJson(videoUpJson)) {
+            ToolOther.tw(activity, "创建成功");
+            if (rea != null)
+                rea.reData(videoUpJson);
+            if (onChangeCompleteListener != null)
+                onChangeCompleteListener.changeComplete(videoUpJson, sonProject, sonPath);
+        } else {
+            ToolOther.tw(activity, "创建失败");
+        }
+        if (progressDialog != null)
+            progressDialog.dismiss();
+
+    }
+
+    /**
+     * 有地址数据
+     * @param videoUpJson
+     * @param onChangeCompleteListener
+     * @param aMapLocation
+     * @param name
+     */
+    public void addSonProject(VideoUpJson videoUpJson,
+                              AMapLocation aMapLocation,
+                              String name,
+                              OnChangeCompleteListener onChangeCompleteListener
+                              ) {
+        addSonProject(videoUpJson,null,onChangeCompleteListener,aMapLocation,name,"暂无备注");
     }
 
 
@@ -343,9 +396,9 @@ public class ToolAddProjects {
      * @param videoUpJson videoUpJson 用于写入数据
      */
     public VideoUpJson deleteSonProject(RecyclerAdapter rea, VideoUpJson videoUpJson, VideoUpJson.SonProject sonProject) {
-        deleteFile(new File(videoPath + videoUpJson.getProjectName() + "/" + sonProject.getSonProjectName()));
+        deleteFiles(new File(videoPath + videoUpJson.getProjectName() + "/" + sonProject.getSonProjectName()));
         videoUpJson.getListSon().remove(sonProject);
-        readJson(videoUpJson);
+        writeJson(videoUpJson);
         rea.reData(videoUpJson);
         return videoUpJson;
     }
@@ -459,14 +512,27 @@ public class ToolAddProjects {
 
 
     //删除文件夹
-    public static void deleteFile(File file) {
+    public static void deleteFiles(File file) {
         if (file == null || !file.exists()) return;
         File[] files = file.listFiles();
         for (File f : files)
-            if (f.isDirectory()) deleteFile(f);
+            if (f.isDirectory()) deleteFiles(f);
             else f.delete();
         file.delete();
     }
+
+    public static boolean deleteFile(String path){
+        File file = new File(path);
+        if(file.exists())
+            return file.delete();
+        return false;
+    }
+
+    public  boolean deleteFile(String videoProjectName,String sonProjectName,String videoName){
+        return deleteFile(videoPath + videoProjectName + "/" + sonProjectName + "/" + videoName);
+    }
+
+
 
 
     //创建文件夹
@@ -480,7 +546,7 @@ public class ToolAddProjects {
 
 
     //写入项目json 数据
-    public static boolean readJson(VideoUpJson videoUpJson, String path) {
+    public static boolean writeJson(VideoUpJson videoUpJson, String path) {
         //Gson 转 String
         String r = new Gson().toJson(videoUpJson);
         try {
@@ -496,8 +562,8 @@ public class ToolAddProjects {
     }
 
     //写入/更新  项目json 数据
-    public boolean readJson(VideoUpJson videoUpJson) {
-        return readJson(videoUpJson, videoPath + videoUpJson.getProjectName() + "/" + AppInfo.videoProjectName);
+    public boolean writeJson(VideoUpJson videoUpJson) {
+        return writeJson(videoUpJson, videoPath + videoUpJson.getProjectName() + "/" + AppInfo.videoProjectName);
     }
 
 
@@ -506,7 +572,6 @@ public class ToolAddProjects {
         String s = readFile(videoPath + projectName + "/" + AppInfo.videoProjectName);
         return new Gson().fromJson(s, VideoUpJson.class);
     }
-
 
 
 }

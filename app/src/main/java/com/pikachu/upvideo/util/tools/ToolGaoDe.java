@@ -60,7 +60,7 @@ public class ToolGaoDe {
             //设置是否允许模拟位置,默认为true，允许模拟位置
             mLocationOption.setMockEnable(true);
             //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
-            mLocationOption.setInterval(2000);
+            mLocationOption.setInterval(1000);
 
 
             //设置首次定位是否等待卫星定位结果

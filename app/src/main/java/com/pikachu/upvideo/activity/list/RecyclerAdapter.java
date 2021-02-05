@@ -26,6 +26,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
     private final Activity activity;
+    private final VideoUpJson videoUpJson;
     private OnClickListener onClickListener;
     private List<VideoUpJson.SonProject> listSon;
     private final int  LIST_BOTTOM = 2 , LIST_ONE = 3, LIST_TOW = 4;
@@ -42,22 +43,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public RecyclerAdapter(Activity activity,
-                           VideoUpJson videoUpJsons,
+                           VideoUpJson videoUpJson,
                            OnClickListener onClickListener) {
         this.activity = activity;
-        if (videoUpJsons != null)
-            listSon = videoUpJsons.getListSon();
+        this.videoUpJson = videoUpJson;
+        if (videoUpJson != null)
+            listSon = videoUpJson.getListSon();
         else listSon = new ArrayList<>();
         this.onClickListener = onClickListener;
     }
 
     //更新数据
-    public void reData(VideoUpJson videoUpJsons) {
-        if (videoUpJsons != null)
-            listSon = videoUpJsons.getListSon();
+    public void reData(VideoUpJson videoUpJson) {
+        if (videoUpJson != null)
+            listSon = videoUpJson.getListSon();
         else listSon = new ArrayList<>();
         notifyDataSetChanged();
     }
+
 
 
 
@@ -129,7 +132,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         //视频
         RecyclerAdapterItem recyclerAdapterItem =
-                new RecyclerAdapterItem(sonProject, onClickListener);
+                new RecyclerAdapterItem(activity,videoUpJson ,sonProject, onClickListener);
         holder.uiSonRecycler.setAdapter(recyclerAdapterItem);
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

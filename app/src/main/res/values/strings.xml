@@ -59,5 +59,6 @@
     <string name="app_time">00:00</string>
     <string name="app_project_start">起点</string>
     <string name="app_project_end">终点</string>
+    <string name="app_son_project_hr">历史视频列表</string>
 
 </resources>

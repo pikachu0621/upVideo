@@ -165,7 +165,7 @@ public class ToolCameraX {
 
     //开始录像 （重新开始）
     public void startVideo(String nodeName,String videoName) {
-        saveVideo(nodeName+"/"+videoName);
+        saveVideo(nodeName + "/" + videoName);
     }
 
     //暂停录像 （暂停录像）
@@ -181,8 +181,10 @@ public class ToolCameraX {
     //停止录像（停止录像）
     @SuppressLint("RestrictedApi")
     public void stopVideo() {
-        if (videoBuild != null)
+        if (videoBuild != null){
+            progressDialog = ToolOther.showDialog(activity, "Loading...", "视频处理中...");
             videoBuild.stopRecording(); //停止录制
+        }
     }
 
     //分段
@@ -201,12 +203,12 @@ public class ToolCameraX {
         String finalS = this.path + /*ToolOther.getTime()*/ path;
         File file = new File(finalS);
 
-        progressDialog = ToolOther.showDialog(activity, "Loading...", "视频处理中...");
         videoBuild.startRecording(file, Executors.newSingleThreadExecutor(),
                 new VideoCapture.OnVideoSavedCallback() {
                     @Override
                     public void onVideoSaved(@NonNull File file) {
-                        progressDialog.dismiss();
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
                         //保存视频成功回调，会在停止录制时被调用
                         activity.runOnUiThread(() -> onVideoSavedCallback.onVideoSaved(file, finalS));
                         //       ToolOther.tw(activity, "已保存到： " + finalS)
@@ -216,7 +218,8 @@ public class ToolCameraX {
                     @Override
                     public void onError(int videoCaptureError, @NonNull String message,
                                         @Nullable Throwable cause) {
-                        progressDialog.dismiss();
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
                         //保存失败的回调，可能在开始或结束录制时被调用8
                         Log.e("test_t", "onError: " + message);
                         activity.runOnUiThread(() -> onVideoSavedCallback.onError(videoCaptureError, message, cause, finalS));
