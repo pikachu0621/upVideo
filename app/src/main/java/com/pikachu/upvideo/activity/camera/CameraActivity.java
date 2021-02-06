@@ -3,9 +3,7 @@ package com.pikachu.upvideo.activity.camera;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,12 +11,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.camera.view.PreviewView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
-import com.google.android.material.appbar.AppBarLayout;
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.activity.list.ListActivity;
 import com.pikachu.upvideo.cls.CameraStartData;
@@ -190,12 +186,16 @@ public class CameraActivity extends BaseActivity implements ToolTimer.OnTimeRunL
 
 
     @Override
-    public void runTime(String timeStr) {
+    public void runTime(String timeStr, long time) {
         caText1.setText(timeStr);
+        if (cameraStartData.getStartType() !=2
+                && videoUpJson.getProjectMode() == 3
+                && time/60 == videoUpJson.getProjectModeInfo())
+            minVideo();
     }
 
     @Override
-    public void stopTime(String timeStr) {
+    public void stopTime(String timeStr, long time) {
         caText1.setText(timeStr);
     }
 

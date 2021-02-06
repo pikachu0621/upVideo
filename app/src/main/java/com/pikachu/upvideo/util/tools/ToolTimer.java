@@ -2,7 +2,6 @@ package com.pikachu.upvideo.util.tools;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.widget.Toolbar;
 
 /**
  * @author Pikachu
@@ -35,8 +34,8 @@ public class ToolTimer {
     }
 
     public interface OnTimeRunListener {
-        void runTime(String timeStr); // 运行时
-        void stopTime(String timeStr); // 暂停
+        void runTime(String timeStr,long time); // 运行时
+        void stopTime(String timeStr,long time); // 暂停
     }
 
     private final Runnable runnable = () -> {
@@ -45,11 +44,11 @@ public class ToolTimer {
                 Thread.sleep(gapItem);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                activity.runOnUiThread(() -> onTimeRunListener.stopTime(getTime(time)));
+                activity.runOnUiThread(() -> onTimeRunListener.stopTime(getTime(time), time));
                 return;
             }
             time += gapItem;
-            activity.runOnUiThread(() -> onTimeRunListener.runTime(getTime(time )));
+            activity.runOnUiThread(() -> onTimeRunListener.runTime(getTime(time), time/gapItem));
         }
     };
 
