@@ -8,10 +8,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
 
 import com.amap.api.location.AMapLocation;
 import com.google.gson.Gson;
@@ -29,6 +33,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -65,9 +71,14 @@ public class ToolAddProjects {
 
 
     public static ToolAddProjects getAddProject(Activity activity) {
+        synchronized (ToolAddProjects.class) {
+            if (toolAddProjects == null)
+                toolAddProjects = new ToolAddProjects(activity);
+            return toolAddProjects;
+        }
        /* if (toolAddProjects == null)
             toolAddProjects =new ToolAddProjects(activity);*/
-        return /*toolAddProjects*/new ToolAddProjects(activity);
+        /*return *//*toolAddProjects*//*new ToolAddProjects(activity);*/
     }
 
     public ToolAddProjects(Activity activity) {
@@ -334,11 +345,11 @@ public class ToolAddProjects {
      * @param msg                      备注
      */
     private void addSonProject(VideoUpJson videoUpJson,
-                              RecyclerAdapter rea,
-                              OnChangeCompleteListener onChangeCompleteListener,
-                              AMapLocation aMapLocation,
-                              String name,
-                              String msg) {
+                               RecyclerAdapter rea,
+                               OnChangeCompleteListener onChangeCompleteListener,
+                               AMapLocation aMapLocation,
+                               String name,
+                               String msg) {
 
         //创建文件夹
         String sonPath = videoPath + videoUpJson.getProjectName() + "/";
@@ -375,6 +386,7 @@ public class ToolAddProjects {
 
     /**
      * 有地址数据
+     *
      * @param videoUpJson
      * @param onChangeCompleteListener
      * @param aMapLocation
@@ -384,8 +396,8 @@ public class ToolAddProjects {
                               AMapLocation aMapLocation,
                               String name,
                               OnChangeCompleteListener onChangeCompleteListener
-                              ) {
-        addSonProject(videoUpJson,null,onChangeCompleteListener,aMapLocation,name,"暂无备注");
+    ) {
+        addSonProject(videoUpJson, null, onChangeCompleteListener, aMapLocation, name, "暂无备注");
     }
 
 
@@ -521,18 +533,16 @@ public class ToolAddProjects {
         file.delete();
     }
 
-    public static boolean deleteFile(String path){
+    public static boolean deleteFile(String path) {
         File file = new File(path);
-        if(file.exists())
+        if (file.exists())
             return file.delete();
         return false;
     }
 
-    public  boolean deleteFile(String videoProjectName,String sonProjectName,String videoName){
+    public boolean deleteFile(String videoProjectName, String sonProjectName, String videoName) {
         return deleteFile(videoPath + videoProjectName + "/" + sonProjectName + "/" + videoName);
     }
-
-
 
 
     //创建文件夹
@@ -571,6 +581,69 @@ public class ToolAddProjects {
     public VideoUpJson readToVideoUpJson(String projectName) {
         String s = readFile(videoPath + projectName + "/" + AppInfo.videoProjectName);
         return new Gson().fromJson(s, VideoUpJson.class);
+    }
+
+
+    /**
+     * 返回当前项目的所有视频路径
+     *
+     * @param context     上下文
+     * @param videoUpJson videoUpJson
+     * @return
+     */
+    public static List<String> getProjectVideoPath(Context context, VideoUpJson videoUpJson) {
+
+        List<VideoUpJson.SonProject> listSon = videoUpJson.getListSon();
+        if (listSon == null || listSon.size() <= 0)
+            return null;
+        ArrayList<String> strings = new ArrayList<>();
+        String path = ToolOther.getVideoPath(context) + videoUpJson.getProjectName() + "/";
+        for (VideoUpJson.SonProject sonProject : listSon) {
+            List<VideoUpJson.SonProject.ListHisVideo> sonProjectVideo = sonProject.getSonProjectVideo();
+            for (VideoUpJson.SonProject.ListHisVideo listHisVideo : sonProjectVideo) {
+                String sonProjectName = sonProject.getSonProjectName();
+                String videoName = listHisVideo.getVideoName();
+                strings.add(path + sonProjectName + "/" + videoName + ".mp4");
+            }
+        }
+        return strings;
+    }
+
+    /**
+     * 获取文件大小
+     *
+     * @param filename
+     * @return
+     */
+    public static long getFileSize(String filename) {
+        File file = new File(filename);
+        if (!file.exists() || !file.isFile())
+            return -1;
+        return file.length();
+    }
+
+
+    @SuppressLint("UniqueConstants")
+    @IntDef(value = {Type.B, Type.KB, Type.MB, Type.GB})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Type {
+        int B = 1, KB = 2, MB = 3, GB = 4;
+    }
+
+
+    public static long getFileSize(String filename, @Type int type) {
+        long fileSize = getFileSize(filename);
+        if (fileSize == -1)
+            return 0;
+        if (type == Type.B)
+            return fileSize;
+        if (type == Type.KB)
+            return fileSize / 1024;
+        if (type == Type.MB)
+            return fileSize / 1024 / 1024;
+        if (type == Type.GB)
+            return fileSize / 1024 / 1024;
+        return 0;
     }
 
 

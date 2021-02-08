@@ -17,12 +17,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.activity.camera.CameraActivity;
+import com.pikachu.upvideo.activity.up.UpZipVideoActivity;
 import com.pikachu.upvideo.cls.CameraStartData;
 import com.pikachu.upvideo.cls.VideoUpJson;
 import com.pikachu.upvideo.util.AppInfo;
 import com.pikachu.upvideo.util.base.BaseActivity;
 import com.pikachu.upvideo.util.tools.ToolAddProjects;
 import com.pikachu.upvideo.util.tools.ToolOther;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -102,6 +107,13 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
                 break;
             case R.id.list_item1:
                 showToast("同步此项目");
+                List<VideoUpJson> videoUpJsons = new ArrayList<>();
+                videoUpJsons.add(videoUpJson);
+
+
+                Intent intent = new Intent(this, UpZipVideoActivity.class);
+                intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJsons.toArray(new VideoUpJson[]{}));
+                startActivity(intent);
                 break;
             case R.id.list_item2:
                 showToast("全选");

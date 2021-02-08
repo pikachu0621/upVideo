@@ -40,7 +40,6 @@
     <string name="app_add_project_hin">请输入项目名称，可包含中文</string>
 
 
-
     <string name="app_son_add_project">添加节点</string>
     <string name="app_son_add_project_msg">用于在地图上显示标记</string>
     <string name="app_son_add_project_hin">请输入节点名</string>
