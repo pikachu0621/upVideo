@@ -22,8 +22,12 @@
                 android:title="全选"
                 app:showAsAction="never"/>
             <item
+                android:id="@+id/item5"
+                android:title="全不选"
+                app:showAsAction="never"/>
+            <item
                 android:id="@+id/item3"
-                android:title="删除"
+                android:title="删除已选项目"
                 app:showAsAction="never"/>
             <item
                 android:id="@+id/item4"

@@ -419,7 +419,11 @@ public class ToolAddProjects {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    //定位一次
+    /**
+     * 定位一次
+     *
+     * @param onMapListener
+     */
     public void mapOnce(OnMapListener onMapListener) {
         gaoDeStop = false;
         gaoDeP = 0;
@@ -456,7 +460,10 @@ public class ToolAddProjects {
     }
 
 
-    //读取全部主项目包括子项目 //这里不能用其他软件删除项目
+    /**
+     * 读取全部主项目包括子项目 //这里不能用其他软件删除项目
+     * @return
+     */
     public List<VideoUpJson> readProject() {
 
         String[] list1 = new File(videoPath).list((dir, name) ->
@@ -490,7 +497,11 @@ public class ToolAddProjects {
     }
 
 
-    //判断是否存在改项目
+    /**
+     * 判断是否存在改项目
+     * @param name
+     * @return
+     */
     private boolean isProjectName(String name) {
         String[] list1 = new File(videoPath).list();
         if (list1 == null || list1.length <= 0) return false;
@@ -503,7 +514,11 @@ public class ToolAddProjects {
     }
 
 
-    //读取文件
+    /**
+     * 读取文件
+     * @param path 完整路径
+     * @return
+     */
     public static String readFile(String path) {
         File file = new File(path);
         StringBuilder stringBuffer = new StringBuilder();
@@ -523,7 +538,10 @@ public class ToolAddProjects {
     }
 
 
-    //删除文件夹
+    /**
+     * 删除文件夹
+     * @param file 文件夹
+     */
     public static void deleteFiles(File file) {
         if (file == null || !file.exists()) return;
         File[] files = file.listFiles();
@@ -533,6 +551,11 @@ public class ToolAddProjects {
         file.delete();
     }
 
+    /**
+     * 删除单个文件
+     * @param path 文件完整路径
+     * @return
+     */
     public static boolean deleteFile(String path) {
         File file = new File(path);
         if (file.exists())
@@ -540,6 +563,13 @@ public class ToolAddProjects {
         return false;
     }
 
+    /**
+     * 删除视频
+     * @param videoProjectName
+     * @param sonProjectName
+     * @param videoName
+     * @return
+     */
     public boolean deleteFile(String videoProjectName, String sonProjectName, String videoName) {
         return deleteFile(videoPath + videoProjectName + "/" + sonProjectName + "/" + videoName);
     }
@@ -631,19 +661,43 @@ public class ToolAddProjects {
     }
 
 
-    public static long getFileSize(String filename, @Type int type) {
+    public static float getFileSize(String filename, @Type int type) {
         long fileSize = getFileSize(filename);
         if (fileSize == -1)
             return 0;
         if (type == Type.B)
             return fileSize;
         if (type == Type.KB)
-            return fileSize / 1024;
+            return fileSize / 1024F;
         if (type == Type.MB)
-            return fileSize / 1024 / 1024;
+            return fileSize / 1024F / 1024F;
         if (type == Type.GB)
-            return fileSize / 1024 / 1024;
-        return 0;
+            return fileSize / 1024F / 1024F;
+        return fileSize;
+    }
+
+
+    public static String getFileSizeStr(String filename) {
+
+        long fileSize = getFileSize(filename);
+        if (fileSize == -1)
+            return "0B";
+        float fileSizeFollow = fileSize;
+        int frequency = 1;
+        while (fileSizeFollow > 1024F) {
+            fileSizeFollow /= 1024F;
+            if (frequency > 5)
+                break;
+            frequency++;
+        }
+        switch (frequency) {
+            case 1: return fileSizeFollow + "B";
+            case 2: return fileSizeFollow + "KB";
+            case 3: return fileSizeFollow + "MB";
+            case 4: return fileSizeFollow + "GB";
+            case 5: return fileSizeFollow + "TB";
+        }
+        return fileSizeFollow+"";
     }
 
 

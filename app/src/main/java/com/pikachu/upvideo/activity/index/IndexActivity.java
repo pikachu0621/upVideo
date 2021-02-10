@@ -1,6 +1,7 @@
 package com.pikachu.upvideo.activity.index;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,10 +19,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.pikachu.upvideo.R;
+import com.pikachu.upvideo.activity.up.UpZipVideoActivity;
 import com.pikachu.upvideo.cls.VideoUpJson;
+import com.pikachu.upvideo.util.AppInfo;
 import com.pikachu.upvideo.util.tools.ToolAddProjects;
 import com.pikachu.upvideo.util.base.BaseActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IndexActivity extends BaseActivity implements BaseActivity.OnPermissionListener,
@@ -125,6 +129,15 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
     }
 
 
+
+    private void startTaskActivity(List<VideoUpJson> list){
+        Intent intent = new Intent(this, UpZipVideoActivity.class);
+        intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, list.toArray(new VideoUpJson[]{}));
+        startActivity(intent);
+    }
+
+
+
     //toolbar菜单
     @SuppressLint("ResourceAsColor")
     @Override
@@ -159,15 +172,33 @@ public class IndexActivity extends BaseActivity implements BaseActivity.OnPermis
         switch (item.getItemId()) {
             case R.id.item1:
                 showToast("同步全部项目");
+                startTaskActivity(videoUpJsons);
                 break;
             case R.id.item2:
                 showToast("全选");
+                if (projectFragment == null)
+                    return false;
+                projectFragment.getRecyclerAdapter()
+                        .allSelectedData(true);
+                break;
+            case R.id.item5:
+                showToast("全选不选");
+                if (projectFragment == null)
+                    return false;
+                projectFragment.getRecyclerAdapter()
+                        .allSelectedData(false);
                 break;
             case R.id.item3:
-                showToast("删除");
+                showToast("删除已选项目");
+                projectFragment.deleteSelectedProject();
                 break;
             case R.id.item4:
                 showToast("同步已选项目");
+                if (projectFragment == null)
+                    return false;
+                List<VideoUpJson> selectedData = projectFragment.getRecyclerAdapter()
+                        .getSelectedData();
+                startTaskActivity(selectedData);
                 break;
         }
         return false;

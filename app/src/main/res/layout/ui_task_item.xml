@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:id="@+id/ui_task_relative"
+    android:background="@drawable/task_click_bg3">
+
+
+    <LinearLayout
+        android:id="@+id/ui_task_lin1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_centerVertical="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_task_item" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ui_task_text1"
+                style="@style/text1"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ui_task_text2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/app_todo"
+                    android:textColor="@color/black_0"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/ui_task_text3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="@string/app_todo"
+                    android:textColor="@color/black_0"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/ui_task_progress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:max="100"
+                android:progress="20" />
+
+            <TextView
+                android:id="@+id/ui_task_text4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_todo"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                tools:ignore="SmallSp" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/ui_task_text5"
+            android:layout_width="55dp"
+            android:layout_height="30dp"
+            android:background="@drawable/task_click_bg1"
+            android:gravity="center"
+            android:text="@string/app_task_stop"
+            android:textColor="@color/up1"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            tools:ignore="SmallSp" />
+
+
+        <!--
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="30dp"
+            android:background="@drawable/task_click_bg0"
+            android:textStyle="bold"
+            android:text="@string/app_task_start"
+            android:gravity="center"
+            android:textColor="@color/up2"
+            android:textSize="11sp"
+            tools:ignore="SmallSp"
+            android:visibility="gone"/>
+            -->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/ui_task_lin2">
+        <TextView
+            android:id="@+id/ui_task_text6"
+            style="@style/text1"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"/>
+
+        <TextView
+            android:id="@+id/ui_task_text7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_task_no_project"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            tools:ignore="SmallSp"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

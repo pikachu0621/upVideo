@@ -106,14 +106,17 @@ public class ListActivity extends BaseActivity implements RecyclerAdapter.OnClic
 
                 break;
             case R.id.list_item1:
+
                 showToast("同步此项目");
                 List<VideoUpJson> videoUpJsons = new ArrayList<>();
                 videoUpJsons.add(videoUpJson);
-
+                videoUpJsons.add(videoUpJson);
+                videoUpJsons.add(videoUpJson);
 
                 Intent intent = new Intent(this, UpZipVideoActivity.class);
                 intent.putExtra(AppInfo.START_ACTIVITY_KEY_1, videoUpJsons.toArray(new VideoUpJson[]{}));
                 startActivity(intent);
+
                 break;
             case R.id.list_item2:
                 showToast("全选");

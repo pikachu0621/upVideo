@@ -4,6 +4,8 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pikachu.upvideo.R;
 import com.pikachu.upvideo.cls.VideoUpJson;
+import com.pikachu.upvideo.util.tools.ToolAddProjects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +24,22 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private final OnClickAndLongClickListener onClickAndLongClickListener;
+    private final ToolAddProjects addProject;
     private List<VideoUpJson> videoUpJsons;
 
 
-    public interface OnClickAndLongClickListener{
-        void onClick(View view,VideoUpJson videoUpJson, int position);
-        boolean onLongClick(View view,VideoUpJson videoUpJson, int position);
+    public interface OnClickAndLongClickListener {
+        void onClick(View view, VideoUpJson videoUpJson, int position);
+
+        boolean onLongClick(View view, VideoUpJson videoUpJson, int position);
     }
 
     public RecyclerAdapter(List<VideoUpJson> videoUpJsons,
-                           OnClickAndLongClickListener onClickAndLongClickListener) {
+                           OnClickAndLongClickListener onClickAndLongClickListener,
+                           ToolAddProjects addProject) {
         this.videoUpJsons = videoUpJsons;
         this.onClickAndLongClickListener = onClickAndLongClickListener;
+        this.addProject = addProject;
     }
 
     //更新数据
@@ -44,6 +51,43 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
 
+    /**
+     * 获取选中数据列表
+     *
+     * @return
+     */
+    public List<VideoUpJson> getSelectedData() {
+
+        ArrayList<VideoUpJson> seData = new ArrayList<>();
+        for (VideoUpJson videoUpJson : this.videoUpJsons) {
+            if (videoUpJson.isSelected())
+                seData.add(videoUpJson);
+        }
+        return seData;
+    }
+
+    /**
+     * 全选/全取消
+     *
+     * @param isCancel true = 全选 反之亦然
+     * @return
+     */
+    public List<VideoUpJson> allSelectedData(boolean isCancel) {
+        for (VideoUpJson videoUpJson : this.videoUpJsons)
+            videoUpJson.setSelected(isCancel);
+        notifyDataSetChanged();
+        return videoUpJsons;
+    }
+
+    /**
+     * 删除已选项目
+     */
+    public void deleteSelectedProject() {
+        for (VideoUpJson videoUpJson : this.videoUpJsons) {
+            if (videoUpJson.isSelected())
+                addProject.deleteProject(videoUpJson.getProjectName());
+        }
+    }
 
 
     @NonNull
@@ -75,14 +119,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //时间
         holder.uiPText9.setText(videoUpJson.getProjectTime());
         //事件
-        holder.uiPLin.setOnClickListener(v -> onClickAndLongClickListener.onClick(v,videoUpJson,position));
+        holder.uiPLin.setOnClickListener(v -> onClickAndLongClickListener.onClick(v, videoUpJson, position));
         holder.uiPLin.setOnLongClickListener(v ->
-                onClickAndLongClickListener.onLongClick(v,videoUpJson,position));
+                onClickAndLongClickListener.onLongClick(v, videoUpJson, position));
+        //选中/取消
+        holder.checkBox.setChecked(videoUpJson.isSelected());
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> videoUpJson.setSelected(isChecked));
     }
 
     private String pxStr(VideoUpJson videoUpJson) {
 
-        switch (videoUpJson.getProjectVideoPx()){
+        switch (videoUpJson.getProjectVideoPx()) {
             case 0:
                 return "720P 30FPS";
             case 1:
@@ -94,7 +141,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
 
-    private String fdStr(VideoUpJson videoUpJson){
+    private String fdStr(VideoUpJson videoUpJson) {
         int mode = videoUpJson.getProjectMode();
         String fd = "";
         if (mode == 0)
@@ -102,16 +149,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         else if (mode == 1)
             fd = "手动分段";
         else if (mode == 2)
-            fd = "按距离分段\n" + videoUpJson.getProjectModeInfo() + "m/段" ;
+            fd = "按距离分段\n" + videoUpJson.getProjectModeInfo() + "m/段";
         else if (mode == 3)
-            fd = "按时间分段\n" + videoUpJson.getProjectModeInfo() + "min/段" ;
+            fd = "按时间分段\n" + videoUpJson.getProjectModeInfo() + "min/段";
         return fd;
     }
 
 
     //比例
     private String popStr(VideoUpJson videoUpJson) {
-        switch (videoUpJson.getProjectVideoWh()){
+        switch (videoUpJson.getProjectVideoWh()) {
             case 0:
                 return "4 : 3";
             case 1:
@@ -119,7 +166,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
         return "4 : 3";
     }
-
 
 
     @Override
@@ -130,6 +176,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout uiPLin;
+        public CheckBox checkBox;
         public TextView uiPText1;
         public TextView uiPText2;
         public TextView uiPText3;
@@ -139,9 +186,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public TextView uiPText7;
         public TextView uiPText8;
         public TextView uiPText9;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             uiPLin = itemView.findViewById(R.id.ui_p_lin);
+            checkBox = itemView.findViewById(R.id.ui_p_check);
             uiPText1 = itemView.findViewById(R.id.ui_p_text1);
             uiPText2 = itemView.findViewById(R.id.ui_p_text2);
             uiPText3 = itemView.findViewById(R.id.ui_p_text3);
@@ -153,9 +202,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             uiPText9 = itemView.findViewById(R.id.ui_p_text9);
         }
     }
-
-
-
 
 
 }

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.iceteck.silicompressorr.SiliCompressor;
@@ -28,12 +29,13 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
-public class UpZipVideoActivity extends BaseActivity implements ServiceConnection {
+public class UpZipVideoActivity extends BaseActivity implements ServiceConnection, RecyclerTaskAdapter.OnClickListener {
 
     private List<VideoUpJson> projectList;
     private Toolbar barToolbar;
     private RecyclerView activityUpZipRecycler;
     private TextView testText;
+    private RecyclerTaskAdapter recyclerTaskAdapter;
 
 
     @Override
@@ -48,6 +50,8 @@ public class UpZipVideoActivity extends BaseActivity implements ServiceConnectio
 
     private void init() {
 
+        setSupportActionBar(barToolbar);
+        setHead(true, "项目上传", "项目没有完成时，请勿清理软件后台", this::finish);
         VideoUpJson[] projects = getSerializableExtra(AppInfo.START_ACTIVITY_KEY_1, VideoUpJson[].class);
         if (projects == null || projects.length <= 0) {
             showToast("无项目");
@@ -55,28 +59,37 @@ public class UpZipVideoActivity extends BaseActivity implements ServiceConnectio
             return;
         }
         projectList = Arrays.asList(projects);
-        setSupportActionBar(barToolbar);
-        setHead(true, "项目上传", "项目没有完成时，请勿清理软件后台", this::finish);
+
+
+
+        activityUpZipRecycler.setLayoutManager(new LinearLayoutManager(this));
+        recyclerTaskAdapter = new RecyclerTaskAdapter(this, projectList, this);
+        activityUpZipRecycler.setAdapter(recyclerTaskAdapter);
+
+
+
+        /*VideoUpJson videoUpJson = projectList.get(0);
+        List<String> projectVideoPath = ToolAddProjects.getProjectVideoPath(this, videoUpJson);
+        if (projectVideoPath == null || projectVideoPath.size() <= 0) {
+            showToast("没有视频");
+            return;
+        }
+        String s = projectVideoPath.get(0);
+        showToast(s);*/
+
+
 
 
       /*  Intent intent = new Intent(this, UpZipService.class);
         bindService(intent,this, Context.BIND_AUTO_CREATE);*/
 
 
-        VideoUpJson videoUpJson = projectList.get(0);
-        List<String> projectVideoPath = ToolAddProjects.getProjectVideoPath(this, videoUpJson);
-        if (projectVideoPath == null || projectVideoPath.size() <= 0) {
-            showToast("没有视频");
-            return;
-        }
 
-        String s = projectVideoPath.get(0);
-        showToast(s);
 
 
         // new VideoCompressAsyncTask(this.getApplicationContext()).execute(projectVideoPath.get(0), projectVideoPath.get(0));
 
-        new Thread(() -> {
+        /*new Thread(() -> {
 
             try {
                 long start = System.currentTimeMillis();
@@ -87,9 +100,9 @@ public class UpZipVideoActivity extends BaseActivity implements ServiceConnectio
                 long diff = (end - start) / 1000;
 
                 runOnUiThread(() -> {
-                            String format = String.format("未压缩前文件大小：%s MB\n压缩后：%s MB\n耗时：%sS\n保存到：%s",
-                                    ToolAddProjects.getFileSize(projectVideoPath.get(0), ToolAddProjects.Type.MB),
-                                    ToolAddProjects.getFileSize(s1, ToolAddProjects.Type.MB),
+                            String format = String.format("未压缩前文件大小：%s\n压缩后：%s\n耗时：%sS\n保存到：%s",
+                                    ToolAddProjects.getFileSizeStr(projectVideoPath.get(0)),
+                                    ToolAddProjects.getFileSizeStr(s1),
                                     diff, s1);
                             showToast(format);
                             testText.setText(format);
@@ -101,72 +114,16 @@ public class UpZipVideoActivity extends BaseActivity implements ServiceConnectio
                 e.printStackTrace();
             }
 
-        }).start();
+        }).start();*/
 
 
     }
 
-
-    class VideoCompressAsyncTask extends AsyncTask<String, String, String> {
-
-        Context mContext;
-
-        public VideoCompressAsyncTask(Context context) {
-            mContext = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... paths) {
-            String filePath = null;
-            try {
-
-                //This bellow is just a temporary solution to test that method call works
-                boolean b = Boolean.parseBoolean(paths[0]);
-                if (b) {
-                    filePath = SiliCompressor.with(mContext).compressVideo(paths[1], paths[2]);
-                }
-
-
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return filePath;
-
-        }
-
-
-        @Override
-        protected void onPostExecute(String compressedFilePath) {
-            super.onPostExecute(compressedFilePath);
-
-         /*   File imageFile = new File(compressedFilePath);
-            compressUri = Uri.fromFile(imageFile);
-            String name = imageFile.getName();
-            float length = imageFile.length() / 1024f; // Size in KB
-
-            String value = length + " KB";
-            String text = String.format(Locale.US, "%s\nName: %s\nSize: %s", getString(R.string.video_compression_complete), name, value);
-            compressionMsg.setVisibility(View.GONE);
-            picDescription.setVisibility(View.VISIBLE);
-            picDescription.setText(text);
-            Log.i("Silicompressor", "Path: " + compressedFilePath);*/
-        }
-    }
 
 
     private void initView() {
         barToolbar = findViewById(R.id.bar_toolbar);
         activityUpZipRecycler = findViewById(R.id.activity_up_zip_recycler);
-
-
-        testText = findViewById(R.id.test_text);
     }
 
 
@@ -194,8 +151,23 @@ public class UpZipVideoActivity extends BaseActivity implements ServiceConnectio
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        //断开时
+        //服务断开时
     }
 
 
+    @Override
+    public void onStopClick(View view, VideoUpJson videoUpJson, List<VideoUpJson> projectList, int position) {
+        //点击暂停时
+    }
+
+    @Override
+    public void onListClick(View view, VideoUpJson videoUpJson, List<VideoUpJson> projectList, int position) {
+        //点击列表时
+    }
+
+    @Override
+    public boolean onLongListClick(View view, VideoUpJson videoUpJson, List<VideoUpJson> projectList, int position) {
+        //长按列表时
+        return false;
+    }
 }

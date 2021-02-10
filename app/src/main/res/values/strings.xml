@@ -59,5 +59,8 @@
     <string name="app_project_start">起点</string>
     <string name="app_project_end">终点</string>
     <string name="app_son_project_hr">历史视频列表</string>
+    <string name="app_task_stop">暂停</string>
+    <string name="app_task_start">开始</string>
+    <string name="app_task_no_project">该项目没有拍摄任何视频  无法进行同步</string>
 
 </resources>

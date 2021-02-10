@@ -75,12 +75,13 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     private void init() {
+        addProject = ToolAddProjects.getAddProject(activity);
         //读取显示项目
         proRe.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerAdapter = new RecyclerAdapter(videoUpJsons, this);
+        recyclerAdapter = new RecyclerAdapter(videoUpJsons, this,addProject);
         proRe.setAdapter(recyclerAdapter);
         proSw.setOnRefreshListener(this);
-        addProject = ToolAddProjects.getAddProject(activity);
+
     }
 
     private void initView() {
@@ -138,6 +139,18 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     }
 
+
+
+    /**
+     * 删除已选项目
+     */
+    public void deleteSelectedProject() {
+        recyclerAdapter.deleteSelectedProject();
+        videoUpJsons = indexActivity.reFragment();
+        recyclerAdapter.reData(this.videoUpJsons);
+    }
+
+
     //列表长按事件
     @Override
     public boolean onLongClick(View view,VideoUpJson videoUpJson, int position) {
@@ -145,5 +158,10 @@ public class ProjectFragment extends Fragment implements SwipeRefreshLayout.OnRe
         refresh(); //刷新数据
         ToolOther.tw(activity,"删除成功");
         return true;
+    }
+
+
+    public RecyclerAdapter getRecyclerAdapter() {
+        return recyclerAdapter;
     }
 }

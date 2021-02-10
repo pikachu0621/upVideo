@@ -73,7 +73,13 @@
                 android:id="@+id/ui_p_text4"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginStart="@dimen/permission_dp_10" />
+                android:layout_marginStart="@dimen/permission_dp_10"
+                android:layout_weight="1"/>
+
+            <CheckBox
+                android:id="@+id/ui_p_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>

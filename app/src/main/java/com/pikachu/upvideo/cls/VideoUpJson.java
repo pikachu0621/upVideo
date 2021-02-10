@@ -8,6 +8,8 @@ package com.pikachu.upvideo.cls;
 import android.annotation.SuppressLint;
 
 import com.amap.api.location.AMapLocation;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -41,6 +43,8 @@ public class VideoUpJson implements Serializable {
     //子项目
     private List<SonProject> listSon;
 
+    @Expose(serialize = false)
+    private transient boolean isSelected;
 
 
 
@@ -58,6 +62,7 @@ public class VideoUpJson implements Serializable {
         this.projectVideoWh = projectVideoWh;
         this.projectVideoPx = projectVideoPx;
         this.listSon = listSon;
+        isSelected = false;
     }
 
 
@@ -485,6 +490,14 @@ public class VideoUpJson implements Serializable {
         );
     }
 
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getProjectName() {
         return projectName;
